@@ -1,4 +1,4 @@
-//24.11.12 지은 [완료] : ...
+//24.11.25 지은 [완료] : AdminRoomContent 작업
 export default function AdminRoomContent() {
   return (
     <div>

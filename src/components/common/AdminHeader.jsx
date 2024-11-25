@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import ButtonEx from "./ButtonEx";
 import "./css/AdminHeader.css";
 
-//24.11.12 지은 [작업중] : 링크 테스트
+//24.11.25 지은 [완료] : AdminHeader 링크 테스트
 export default function AdminHeader() {
   return (
     <div id="adminHeaderContainer">

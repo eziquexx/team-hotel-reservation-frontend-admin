@@ -2,6 +2,7 @@ import Accordion from "react-bootstrap/Accordion";
 import ButtonEx from "./ButtonEx";
 import "./css/AdminAside.css";
 
+//24.11.25 지은 [완료] : AdminAside 작업
 export default function AdminAside() {
   return (
     <div id="AdminAsideContainer">

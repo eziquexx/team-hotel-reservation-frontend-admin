@@ -9,6 +9,7 @@ import AdminBoardsContent from "../admin/boards/script/AdminBoardsContent";
 import AdminStatisticsContent from "../admin/statistics/script/AdminStatisticsContent";
 import "./css/AdminMain.css";
 
+//24.11.25 지은 [완료] : AdminMain 작업
 export default function AdminMain() {
   return (
     <div id="AdminMainConatainer">
