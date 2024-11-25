@@ -1,0 +1,29 @@
+#adminHeaderContainer .logoutBtn {
+  margin-left: 16px;
+}
+
+#adminHeaderContainer .navbar-brand {
+  flex-basis: 188px;
+  /* margin: 0; */
+}
+
+#adminHeaderContainer .nav-link {
+  padding: 0;
+}
+
+#adminHeaderContainer .material-symbols-outlined {
+  font-size: 28px;
+  font-variation-settings: 'FILL' 1, 'OPSZ' 28;
+  line-height: 1.4;
+  color: #767676;
+  transition: color ease 0.3s;
+}
+
+#adminHeaderContainer .material-symbols-outlined:hover {
+  color: #374d69;
+}
+
+#adminHeaderContainer .adminHomeBtn {
+  background-color: transparent;
+  border: 0;
+}

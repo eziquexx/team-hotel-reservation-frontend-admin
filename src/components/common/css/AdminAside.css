@@ -1,0 +1,74 @@
+#AdminAsideContainer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-basis: auto;
+  width: 200px;
+  flex-shrink: 0;
+  flex-basis: 200px;
+  background-color: #1d2939;
+}
+#AdminAsideContainer .accordion-item {
+  background-color: transparent;
+}
+#AdminAsideContainer .accordion-button {
+  padding: 10px 8px;
+  margin: 0;
+  background-color: transparent;
+}
+#AdminAsideContainer .accordion-button:active,
+#AdminAsideContainer .accordion-button:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+#AdminAsideContainer .adminAsideMenu {
+  width: 100%;
+  background-color: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  color: #ffffff;
+}
+#AdminAsideContainer .adminAsideMenu p,
+#AdminAsideContainer .accordion-body p {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+#AdminAsideContainer .adminAsideMenu p span,
+#AdminAsideContainer .accordion-body p span {
+  display: inline-block;
+}
+
+#AdminAsideContainer .adminAsideMenu p span.icons,
+#AdminAsideContainer .accordion-body p span.icons {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+#AdminAsideContainer .adminAsideSubMenu {
+  padding: 6px 0;
+}
+
+#AdminAsideContainer .accordion-body {
+  padding: 10px 8px;
+  color: #ffffff;
+  text-align: center;
+}
+
+#AdminAsideContainer .accordion-button.collapsed::after {
+  background: url("/src/assets/images/keyboard_arrow_down_32dp_FFFFFF_FILL0_wght400_GRAD0_opsz40.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 1rem;
+  background-size: cover;
+}
+
+#AdminAsideContainer .accordion-button:not(.collapsed)::after {
+  background: url("/src/assets/images/keyboard_arrow_down_32dp_FFFFFF_FILL0_wght400_GRAD0_opsz40.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 1rem;
+  background-size: cover;
+}
