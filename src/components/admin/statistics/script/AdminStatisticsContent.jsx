@@ -1,4 +1,4 @@
-//24.11.25 지은 [완료] : AdminStatisticsContent 작업
+// AdminStatisticsContent
 export default function AdminStatisticsContent() {
   return (
     <div>

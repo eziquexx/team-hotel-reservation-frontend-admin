@@ -1,4 +1,4 @@
-//24.11.25 지은 [완료] : AdminMemberContent 작업
+// AdminMemberContent
 export default function AdminMemberContent() {
   return (
     <div>

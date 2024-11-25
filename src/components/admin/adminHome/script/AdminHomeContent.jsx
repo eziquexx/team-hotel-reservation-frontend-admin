@@ -1,4 +1,4 @@
-//24.11.25 지은 [완료] : AdminHomeContent 작업
+// AdminHomeContent
 export default function AdminHomeContent() {
   return (
     <div>

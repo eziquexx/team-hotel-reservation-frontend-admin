@@ -1,4 +1,4 @@
-//24.11.25 지은 [완료] : AdminReservationContent 작업
+// AdminReservationContent
 export default function AdminReservationContent() {
   return (
     <div>

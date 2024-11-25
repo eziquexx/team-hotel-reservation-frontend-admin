@@ -1,4 +1,4 @@
-//24.11.25 지은 [완료] : AdminStaffContent 작업
+// AdminStaffContent
 export default function AdminStaffContent() {
   return (
     <div>
