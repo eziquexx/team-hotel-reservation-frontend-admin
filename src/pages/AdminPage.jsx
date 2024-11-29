@@ -1,6 +1,9 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import AdminContents from "../components/common/AdminContents";
 import AdminHeader from "../components/common/AdminHeader";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
+import AdminMemberContent from "../components/admin/member/script/AdminMemberContent"
 
 const AdminContainerStyle = {
   display: "flex",
@@ -13,6 +16,13 @@ export default function AdminPage() {
   return (
     <div style={AdminContainerStyle}>
       <AdminHeader />
+
+        <Routes>
+
+            <Route path="/members" element={<AdminMemberContent />} /> {/* 회원 관리 */}
+
+        </Routes>
+
       <AdminContents />
     </div>
   );

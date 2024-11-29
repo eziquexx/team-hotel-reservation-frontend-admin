@@ -1,7 +1,7 @@
 import Table from 'react-bootstrap/Table';
 
 
-export default function AdminPaymentsContent() {
+export default function AdminMemberContent() {
     return (
         <div>
             <h1>회원관리</h1>
