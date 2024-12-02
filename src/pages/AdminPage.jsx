@@ -1,29 +1,21 @@
-import "bootstrap/dist/css/bootstrap.min.css";
-import AdminContents from "../components/common/AdminContents";
-import AdminHeader from "../components/common/AdminHeader";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import React from 'react';
+import { Navigate } from 'react-router-dom';
+import { getJWTFromCookies, isAdmin } from '../util/auth';
 
-import AdminMemberContent from "../components/admin/member/script/AdminMemberContent"
+const AdminPage = () => {
+    const token = getJWTFromCookies();
 
-const AdminContainerStyle = {
-  display: "flex",
-  flexDirection: "column",
-  height: "100vh",
+    if (!token || !isAdmin(token)) {
+        // Redirect to login page if not an admin
+        return <Navigate to="/login" replace />;
+    }
+
+    return (
+        <div>
+            <h1>Admin Dashboard</h1>
+            <p>Welcome, Admin! You have access to this page.</p>
+        </div>
+    );
 };
 
-//24.11.25 지은 [완료] : 관리자 페이지 경로 테스트.
-export default function AdminPage() {
-  return (
-    <div style={AdminContainerStyle}>
-      <AdminHeader />
-
-        <Routes>
-
-            <Route path="/members" element={<AdminMemberContent />} /> {/* 회원 관리 */}
-
-        </Routes>
-
-      <AdminContents />
-    </div>
-  );
-}
+export default AdminPage;
