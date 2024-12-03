@@ -1,1 +1,5 @@
 /* AdminPaymentsContent.css */
+/* 나중에 삭제 예정 */
+#AdminMainConatainer #AdminMainContentsWrap {
+  width: 1200px !important;
+}
