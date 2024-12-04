@@ -3,81 +3,111 @@
   display: flex;
   flex-direction: column;
   flex-basis: auto;
-  width: 200px;
+  width: 180px;
   flex-shrink: 0;
-  flex-basis: 200px;
+  flex-basis: 180px;
   background-color: #1d2939;
 }
 #AdminAsideContainer .accordion-item {
-  background-color: #1d2939;
-}
-#AdminAsideContainer .accordion-button {
-  padding: 10px 8px;
-  margin: 0;
-}
-#AdminAsideContainer .accordion-button:active,
-#AdminAsideContainer .accordion-button:focus {
-  outline: none !important;
-  box-shadow: none !important;
-}
-.accordion-button:not(.collapsed) {
-  color: #ffffff;
-  background-color: #0b1829;
-  box-shadow: inset 0 -1px 0 rgb(0 0 0 / 13%);
-}
-.accordion-button.collapsed {
-  color: #ffffff;
-  background-color: #1d2939;
-  box-shadow: inset 0 -1px 0 rgb(0 0 0 / 13%);
+  /* background-color: #1d2939; */
+  border: 0;
+  background-color: transparent;
+  border-bottom: 1px solid #354253 !important;
 }
 
 #AdminAsideContainer .adminAsideMenu {
   width: 100%;
+  display: flex;
   background-color: transparent;
   border: 0;
   padding: 0;
   margin: 0;
   color: #ffffff;
 }
-#AdminAsideContainer .adminAsideMenu,
+#AdminAsideContainer .adminAsideMenu p,
 #AdminAsideContainer .accordion-body p {
   display: flex;
   align-items: center;
   margin: 0;
 }
-#AdminAsideContainer .adminAsideMenu span,
+#AdminAsideContainer .adminAsideMenu p span,
 #AdminAsideContainer .accordion-body p span {
   display: inline-block;
 }
-
 #AdminAsideContainer .adminAsideMenu span.icons,
-#AdminAsideContainer .accordion-body p span.icons {
+#AdminAsideContainer .accordion-body span.icons {
   margin-left: 10px;
-  margin-right: 10px;
+  margin-right: 6px;
+  font-size: 18px;
 }
-
 #AdminAsideContainer .adminAsideSubMenu {
   padding: 6px 0;
 }
-
 #AdminAsideContainer .accordion-body {
-  padding: 5px 8px;
+  padding: 4px 8px;
   color: #ffffff;
   text-align: center;
 }
-
+#AdminAsideContainer .accordion-button {
+  padding: 10px 8px;
+  margin: 0;
+  border: 0;
+  background-color: transparent;
+  border-top: none;
+}
+#AdminAsideContainer .accordion-button:active,
+#AdminAsideContainer .accordion-button:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+#AdminAsideContainer .accordion-button:not(.collapsed) {
+  background: #0f1c2e;
+  border-bottom: 1px solid #354253;
+  box-shadow: none;
+}
 #AdminAsideContainer .accordion-button.collapsed::after {
   background: url("/src/assets/images/keyboard_arrow_down_32dp_FFFFFF_FILL0_wght400_GRAD0_opsz40.svg");
   background-repeat: no-repeat;
   background-position: center;
   width: 1rem;
   background-size: cover;
+  border-bottom: 0;
 }
-
 #AdminAsideContainer .accordion-button:not(.collapsed)::after {
   background: url("/src/assets/images/keyboard_arrow_down_32dp_FFFFFF_FILL0_wght400_GRAD0_opsz40.svg");
   background-repeat: no-repeat;
   background-position: center;
   width: 1rem;
   background-size: cover;
+}
+#AdminAsideContainer .menu-text {
+  font-size: 13px;
+}
+.accordion-header:hover,
+.accordion-collapse.collapse.show:hover {
+  background-color: #132338;
+}
+/* .accordion-collapse.collapse.show:active {
+  background-color: #0e1d33;
+} */
+/* .accordion-button:not(.collapsed) {
+  color: #ffffff;
+  background-color: #0b1829;
+  box-shadow: none;
+}
+.accordion-button.collapsed {
+  color: #ffffff;
+  background-color: #1975ff;
+  box-shadow: none;
+} */
+
+/* 기본 Accordion.Body 스타일 */
+.accordion-body {
+  background-color: #1d2939; /* 기본 배경 색상 */
+  transition: background-color 0.3s ease; /* 색상 변경 부드럽게 */
+}
+
+/* 클릭된 Accordion.Body의 색상 변경 */
+.accordion-body.clicked-body {
+  background-color: lightblue; /* 클릭 시 배경색 변경 */
 }
