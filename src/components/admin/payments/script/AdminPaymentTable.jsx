@@ -1,14 +1,15 @@
-import Table from 'react-bootstrap/Table';
+import Table from "react-bootstrap/Table";
+import { data } from "react-router-dom";
 
-export default function AdminPaymentTable() {
+export default function AdminPaymentTable({ data }) {
   return (
     <>
-      <Table 
-        responsive="xl" 
+      <Table
+        responsive="xl"
         border={1}
-        className='table-hover table-bordered text-center'
+        className="table-hover table-bordered text-center"
       >
-        <thead className='table-light'>
+        <thead className="table-light">
           <tr>
             <th>결제ID</th>
             <th>예약ID</th>
@@ -21,40 +22,20 @@ export default function AdminPaymentTable() {
             <th>수정일</th>
           </tr>
         </thead>
-        <tbody className='table-group-divider'>
-          <tr>
-            <td>1</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-            <td>Table cell</td>
-          </tr>
+        <tbody className="table-group-divider">
+          {Object.entries(data).map(([key, value]) => (
+            <tr key={value.paymentId}>
+              <td>{value.paymentId}</td>
+              <td>{value.reservationId}</td>
+              <td>{value.memberId}</td>
+              <td>{value.memberName}</td>
+              <td>{value.paymentMethod}</td>
+              <td>{value.paymentStatus}</td>
+              <td>{value.amount}</td>
+              <td>{value.createdAt}</td>
+              <td>{value.updatedAt}</td>
+            </tr>
+          ))}
         </tbody>
       </Table>
     </>
