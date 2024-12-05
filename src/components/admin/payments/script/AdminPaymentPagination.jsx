@@ -1,9 +1,9 @@
-import Pagination from 'react-bootstrap/Pagination';
+import Pagination from "react-bootstrap/Pagination";
 
 export default function AdminPaymentPagination() {
   return (
-    <Pagination className='justify-content-center'>
-      <Pagination.First />
+    <Pagination className="justify-content-center">
+      {/* <Pagination.First /> */}
       <Pagination.Prev />
       <Pagination.Item active>{1}</Pagination.Item>
       <Pagination.Item>{2}</Pagination.Item>
@@ -16,8 +16,7 @@ export default function AdminPaymentPagination() {
       <Pagination.Item>{9}</Pagination.Item>
       <Pagination.Item>{10}</Pagination.Item>
       <Pagination.Next />
-      <Pagination.Last />
+      {/* <Pagination.Last /> */}
     </Pagination>
   );
 }
-
