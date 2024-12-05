@@ -1,0 +1,32 @@
+/* 토글 버튼 스타일 */
+.toggle-switch {
+
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 75px; /* 버튼 너비 */
+    height: 30px; /* 버튼 높이 */
+    border-radius: 5px;
+    border: none;
+    font-size: 14px; /* 텍스트 크기 */
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* 사용가능 상태 (초록색) */
+.toggle-switch.on {
+    background-color: #4CAF50;
+}
+
+/* 사용중 상태 (빨간색) */
+.toggle-switch.off {
+    background-color: #F44336;
+}
+
+/* 버튼 텍스트의 여백 조정 */
+.toggle-switch span {
+    margin-left: 5px;
+}
