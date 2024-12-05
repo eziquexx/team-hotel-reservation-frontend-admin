@@ -1,26 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const AdminLoginPage = () => {
-    const [staffUserId, setStaffUserId] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [staffUserId, setStaffUserId] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
 
     const handleLogin = async (event) => {
         event.preventDefault();
-        setError(''); // Clear any existing error
+        setError(''); // Clear existing error
 
         try {
-            const response = await fetch('/api/admin/login', { // 관리자 전용 로그인 API
+            const response = await fetch('http://localhost:8080/api/admin/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ staff_user_id: staffUserId, password }), // JSON 필드 이름 맞춤
+                credentials: 'include', // 쿠키 포함 설정
+                body: JSON.stringify({ staffUserId, password }),
             });
 
             if (response.ok) {
                 const data = await response.json();
-                document.cookie = `token=${data.token}; path=/; secure`; // Save token in cookies
                 window.location.href = '/admin'; // Redirect to admin page
             } else {
                 setError('Invalid ID or password.');
@@ -31,9 +31,9 @@ const AdminLoginPage = () => {
     };
 
     return (
-        <div style={{ maxWidth: '400px', margin: '0 auto', padding: '20px' }}>
+        <div style={{ maxWidth: "400px", margin: "0 auto", padding: "20px" }}>
             <h1>Admin Login</h1>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {error && <p style={{ color: "red" }}>{error}</p>}
             <form onSubmit={handleLogin}>
                 <div>
                     <label>Staff ID:</label>
