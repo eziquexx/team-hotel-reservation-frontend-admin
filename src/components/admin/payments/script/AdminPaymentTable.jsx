@@ -1,7 +1,7 @@
 import Table from "react-bootstrap/Table";
-import { data } from "react-router-dom";
 
-export default function AdminPaymentTable({ data }) {
+export default function AdminPaymentTable({ data, loading }) {
+  if (loading) return <p>Loading...</p>;
   return (
     <>
       <Table
@@ -23,7 +23,20 @@ export default function AdminPaymentTable({ data }) {
           </tr>
         </thead>
         <tbody className="table-group-divider">
-          {Object.entries(data).map(([key, value]) => (
+          {data.map((item) => (
+            <tr key={item.paymentId}>
+              <td>{item.paymentId}</td>
+              <td>{item.reservationId}</td>
+              <td>{item.memberId}</td>
+              <td>{item.memberName}</td>
+              <td>{item.paymentMethod}</td>
+              <td>{item.paymentStatus}</td>
+              <td>{item.amount}</td>
+              <td>{item.createdAt}</td>
+              <td>{item.updatedAt}</td>
+            </tr>
+          ))}
+          {/* {Object.entries(data).map(([key, value]) => (
             <tr key={value.paymentId}>
               <td>{value.paymentId}</td>
               <td>{value.reservationId}</td>
@@ -35,7 +48,7 @@ export default function AdminPaymentTable({ data }) {
               <td>{value.createdAt}</td>
               <td>{value.updatedAt}</td>
             </tr>
-          ))}
+          ))} */}
         </tbody>
       </Table>
     </>
