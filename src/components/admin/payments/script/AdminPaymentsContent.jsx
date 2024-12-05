@@ -8,16 +8,23 @@ export default function AdminPaymentsContent() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [totalItems, setTotalItems] = useState(0); // 총 데이터 개수
+  const [page, setPage] = useState(1); // 현재 페이지
+  const itemsPerPage = 10; // 한 페이지에 표시할 항목 개수
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
-        const response = await fetch("http://localhost:8080/api/payments");
+        const response = await fetch(
+          `http://localhost:8080/api/payments?page=${page}&limit=${itemsPerPage}`
+        );
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-        const data = await response.json();
-        setData(data);
+        const result = await response.json();
+        setData(result.data);
+        setTotalItems(result.total); // 총 데이터 개수 저장
       } catch (error) {
         setError(error.message);
         setLoading(false);
@@ -27,7 +34,7 @@ export default function AdminPaymentsContent() {
     };
 
     fetchData();
-  }, []);
+  }, [page]);
 
   console.log(data);
   if (loading) return <div>Loading...</div>;
@@ -38,8 +45,13 @@ export default function AdminPaymentsContent() {
     <div>
       <h5>결제내역 목록</h5>
       <div>
-        <AdminPaymentTable data={data} />
-        <AdminPaymentPagination />
+        <AdminPaymentTable data={data} loading={loading} />
+        <AdminPaymentPagination
+          page={page}
+          totalItems={totalItems}
+          itemsPerPage={itemsPerPage}
+          onPageChange={(newPage) => setPage(newPage)}
+        />
       </div>
     </div>
   );
