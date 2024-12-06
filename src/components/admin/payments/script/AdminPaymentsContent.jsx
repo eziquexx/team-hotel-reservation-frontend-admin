@@ -44,9 +44,9 @@ export default function AdminPaymentsContent() {
   if (!data) return <div>No reservation data available.</div>;
 
   return (
-    <div>
-      <h5>결제내역 목록</h5>
-      <div>
+    <div id="adminPaymentContent">
+      <h5 className="contentTitle">결제내역 목록</h5>
+      <div className="contentTable">
         <AdminPaymentTable data={data} loading={loading} />
         <AdminPaymentPagination
           page={page}

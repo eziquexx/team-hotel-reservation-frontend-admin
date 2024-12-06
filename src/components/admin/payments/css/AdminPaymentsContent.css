@@ -1,5 +1,21 @@
 /* AdminPaymentsContent.css */
 /* 나중에 삭제 예정 */
+
 #AdminMainConatainer #AdminMainContentsWrap {
-  width: 1200px !important;
+  width: 1240px !important;
+}
+
+
+#adminPaymentContent .table-height-fixed {
+  height: 460px;
+  margin-bottom: 20px;
+}
+
+#adminPaymentContent .contentTitle {
+  margin-top: 10px;
+  margin-bottom: 16px;
+}
+
+#adminPaymentContent .contentTable {
+  font-size: 14px;
 }
