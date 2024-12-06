@@ -8,6 +8,8 @@ import AdminStaffContent from "../components/admin/staff/script/AdminStaffConten
 import AdminStatisticsContent from "../components/admin/statistics/script/AdminStatisticsContent";
 import AdminPage from "../pages/AdminPage";
 import AdminHomeContent from "../components/admin/adminHome/script/AdminHomeContent";
+import AdminPaymentsList from "../components/admin/payments/script/AdminPaymentsList";
+import AdminPaymentsPaypalList from "../components/admin/payments/script/AdminPaymentsPaypalList";
 
 //24.12.03 지은 [완료] : create-browser-router 적용
 export const RouterInfo = [
@@ -38,6 +40,16 @@ export const RouterInfo = [
       {
         path: "payments",
         element: <AdminPaymentsContent />,
+        children: [
+          {
+            path:"",
+            element: <AdminPaymentsList />,
+          },
+          {
+            path:"paypal",
+            element: <AdminPaymentsPaypalList />,
+          }
+        ]
       },
       {
         path: "boards",
