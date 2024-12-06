@@ -2,9 +2,10 @@ import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 
+// 24.12.06 지은 : 결제내역 테이블 fin. 상세내역 모달창 작업 fin.
 export default function AdminPaymentTable({ data, loading }) {  
   const [showModal, setShowModal] = useState(false);
-  const [selectedPayment, setSelectedPayment] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
   const [loadingDetails, setLoadingDetails] = useState(false);
   const [error, setError] = useState(null);
 
@@ -18,17 +19,17 @@ export default function AdminPaymentTable({ data, loading }) {
   }
 
   // row 클릭 시 API 호출 및 모달 열기
-  const handleRowClick = async (paymentId) => {
+  const handleRowClick = async (itemId) => {
     setLoadingDetails(true);
     setError(null);
 
     try {
-      const response = await fetch(`http://localhost:8080/api/payments/${paymentId}/details`);
+      const response = await fetch(`http://localhost:8080/api/payments/${itemId}/details`);
       if (!response.ok) {
         throw new Error("Failed to fetch ayment details.");
       }
       const paymentDetails = await response.json();
-      setSelectedPayment(paymentDetails);
+      setSelectedItem(paymentDetails);
       console.log(paymentDetails);
       setShowModal(true);
     } catch (err) {
@@ -41,7 +42,7 @@ export default function AdminPaymentTable({ data, loading }) {
   // 모달 닫기
   const handleClose = () => {
     setShowModal(false);
-    setSelectedPayment(null);
+    setSelectedItem(null);
   }
 
   return (
@@ -96,17 +97,17 @@ export default function AdminPaymentTable({ data, loading }) {
             ) : error ? (
               <p>Error: {error}</p>
             ) : (
-              selectedPayment && (
+              selectedItem && (
                 <>
-                  <p><strong>결제ID:</strong> {selectedPayment.paymentId}</p>
-                  <p><strong>예약ID:</strong> {selectedPayment.reservationId}</p>
-                  <p><strong>회원이름:</strong> {selectedPayment.memberName}</p>
-                  <p><strong>결제방식:</strong> {selectedPayment.paymentMethod}</p>
-                  <p><strong>결제상태:</strong> {selectedPayment.paymentStatus}</p>
-                  <p><strong>총금액:</strong> {selectedPayment.amount}</p>
-                  <p><strong>트랜잭션ID:</strong> {selectedPayment.transactionId}</p>
-                  <p><strong>생성일:</strong> {selectedPayment.paymentDate}</p>
-                  <p><strong>수정일:</strong> {selectedPayment.paymentUpdate}</p>
+                  <p><strong>결제ID:</strong> {selectedItem.paymentId}</p>
+                  <p><strong>예약ID:</strong> {selectedItem.reservationId}</p>
+                  <p><strong>회원이름:</strong> {selectedItem.memberName}</p>
+                  <p><strong>결제방식:</strong> {selectedItem.paymentMethod}</p>
+                  <p><strong>결제상태:</strong> {selectedItem.paymentStatus}</p>
+                  <p><strong>총금액:</strong> {selectedItem.amount}</p>
+                  <p><strong>트랜잭션ID:</strong> {selectedItem.transactionId}</p>
+                  <p><strong>생성일:</strong> {selectedItem.paymentDate}</p>
+                  <p><strong>수정일:</strong> {selectedItem.paymentUpdate}</p>
                 </>
               )
             )}
