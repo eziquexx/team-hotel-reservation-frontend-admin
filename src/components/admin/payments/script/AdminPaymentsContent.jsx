@@ -3,11 +3,9 @@ import "../css/AdminPaymentsContent.css";
 
 // AdminMemberContent
 export default function AdminPaymentsContent() {
-
-
   return (
     <div id="adminPaymentContent">
-      <Outlet/>
+      <Outlet />
     </div>
   );
 }
