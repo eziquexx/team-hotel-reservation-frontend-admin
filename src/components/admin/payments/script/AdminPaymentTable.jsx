@@ -2,6 +2,8 @@ import Table from "react-bootstrap/Table";
 
 export default function AdminPaymentTable({ data, loading }) {
   if (loading) return <p>Loading...</p>;
+  if (!data || data.length === 0) return <p>No data available.</p>;
+  
   return (
     <>
       <Table
