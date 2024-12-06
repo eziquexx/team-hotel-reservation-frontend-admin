@@ -2,11 +2,12 @@ import Pagination from "react-bootstrap/Pagination";
 
 export default function AdminPaymentPagination({
   page,
-  totalItems,
-  itemsPerPage,
+  totalElements,
+  totalPages,
+  size,
   onPageChange,
 }) {
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  // const totalPages = totalElements;
 
   const pageNumbers = [];
   for (let i = 1; i <= totalPages; i++) {
@@ -18,20 +19,20 @@ export default function AdminPaymentPagination({
       {/* <Pagination.First /> */}
       <Pagination.Prev
         disabled={page === 1}
-        onClick={() => onPageChange(page - 1)}
+        onClick={() => page > 1 && onPageChange(page - 1)}
       />
       {pageNumbers.map((number) => (
         <Pagination.Item
-          active
           key={number}
+          active={number === page} 
           onClick={() => onPageChange(number)}
         >
           {number}
         </Pagination.Item>
       ))}
       <Pagination.Next
-        disabled={page === totalPages}
-        onClick={() => onPageChange(page + 1)}
+        disabled={page === totalElements}
+        onClick={() => page < totalPages && onPageChange(page + 1)}
       />
       {/* <Pagination.Last /> */}
     </Pagination>
