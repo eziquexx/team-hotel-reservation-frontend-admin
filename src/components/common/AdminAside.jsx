@@ -142,7 +142,7 @@ export default function AdminAside() {
                 <span className="material-symbols-outlined icons">
                   check_indeterminate_small
                 </span>
-                <span className="menu-text">PAYPAL 주문내역</span>
+                <span className="menu-text">PayPal 주문내역</span>
               </p>
             </ButtonEx>
           </Accordion.Body>
