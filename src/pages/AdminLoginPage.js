@@ -21,10 +21,10 @@ const AdminLoginPage = () => {
 
             if (response.ok) {
                 const data = await response.json();
-                const { token, role } = data;
+                const { role } = data; // role만 필요함
 
                 if (role === "ADMIN") {
-                    localStorage.setItem("authToken", token); // 토큰 저장
+                    // 쿠키는 서버에서 설정되므로 따로 저장하지 않음
                     navigate("/admin"); // 관리자 페이지로 리다이렉트
                 } else {
                     setError("You are not authorized to access this page.");
