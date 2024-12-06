@@ -5,7 +5,7 @@ export default function AdminPaymentTable({ data, loading }) {
   if (!data || data.length === 0) return <p>No data available.</p>;
   
   return (
-    <>
+    <div className="table-height-fixed">
       <Table
         responsive="xl"
         border={1}
@@ -34,25 +34,18 @@ export default function AdminPaymentTable({ data, loading }) {
               <td>{item.paymentMethod}</td>
               <td>{item.paymentStatus}</td>
               <td>{item.amount}</td>
-              <td>{item.createdAt}</td>
-              <td>{item.updatedAt}</td>
+              <td>{formatDate(item.createdAt)}</td>
+              <td>{formatDate(item.updatedAt)}</td>
             </tr>
           ))}
-          {/* {Object.entries(data).map(([key, value]) => (
-            <tr key={value.paymentId}>
-              <td>{value.paymentId}</td>
-              <td>{value.reservationId}</td>
-              <td>{value.memberId}</td>
-              <td>{value.memberName}</td>
-              <td>{value.paymentMethod}</td>
-              <td>{value.paymentStatus}</td>
-              <td>{value.amount}</td>
-              <td>{value.createdAt}</td>
-              <td>{value.updatedAt}</td>
-            </tr>
-          ))} */}
         </tbody>
       </Table>
-    </>
+    </div>
   );
+}
+
+function formatDate(dateString) {
+  const date = new Date(dateString)
+  const formattedDate = date.toISOString().replace('T', ' ').split('.')[0];
+  return formattedDate;
 }
