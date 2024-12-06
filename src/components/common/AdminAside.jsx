@@ -124,14 +124,25 @@ export default function AdminAside() {
             <ButtonEx
               id={"paymentsGroup"}
               url={"/admin/payments"}
-              // action={fetch('')}
               className={"adminAsideMenu adminAsideSubMenu"}
             >
               <p>
                 <span className="material-symbols-outlined icons">
                   check_indeterminate_small
                 </span>
-                <span className="menu-text">결제목록</span>
+                <span className="menu-text">결제내역</span>
+              </p>
+            </ButtonEx>
+            <ButtonEx
+              id={"paymentsGroupPaypal"}
+              url={"/admin/payments/paypal"}
+              className={"adminAsideMenu adminAsideSubMenu"}
+            >
+              <p>
+                <span className="material-symbols-outlined icons">
+                  check_indeterminate_small
+                </span>
+                <span className="menu-text">PAYPAL 주문내역</span>
               </p>
             </ButtonEx>
           </Accordion.Body>

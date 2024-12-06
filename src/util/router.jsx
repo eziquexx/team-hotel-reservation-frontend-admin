@@ -58,6 +58,16 @@ export const RouterInfo = [
       {
         path: "payments",
         element: <AdminPaymentsContent />,
+        children: [
+          {
+            path:"",
+            element: <AdminPaymentsList />,
+          },
+          {
+            path:"paypal",
+            element: <AdminPaymentsPaypalList />,
+          }
+        ]
       },
       {
         path: "boards",
