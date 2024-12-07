@@ -1,3 +1,4 @@
+import { Spinner } from "react-bootstrap";
 import AdminPaymentPaginavigation from "./AdminPaymentPaginavigation";
 import AdminPaymentPaypalTable from "./AdminPaymentPaypalTable";
 import usePaginationFetch from "./usePaginationFetch";
@@ -16,7 +17,17 @@ export default function AdminPaymentsPaypalList() {
       size,
     } = usePaginationFetch(urlTest);
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return (
+        <div>
+            <Spinner
+                as="span"
+                animation="border"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+            /> Loading...
+        </div>
+    );
     if (error) return <div>Error: {error}</div>;
     if (!data) return <div>No reservation data available.</div>;
 

@@ -4,18 +4,17 @@
 #AdminMainConatainer #AdminMainContentsWrap {
   width: 1240px !important;
 }
-
-
 #adminPaymentContent .table-height-fixed {
   height: 420px;
   margin-bottom: 20px;
 }
-
 #adminPaymentContent .contentTitle {
   margin-top: 10px;
   margin-bottom: 16px;
 }
-
 #adminPaymentContent .contentTable {
   font-size: 14px;
+}
+.adminPaymentModal .modal-item-text {
+  margin-left: 6px;
 }

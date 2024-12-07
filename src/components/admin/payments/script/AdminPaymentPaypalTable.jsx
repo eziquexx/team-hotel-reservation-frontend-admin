@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Modal } from "react-bootstrap";
+import { Button, Modal, Spinner } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 
 // 24.12.06 지은 : PayPal 주문내역 테이블 fin. 상세내역 모달창 작업 fin.
@@ -10,7 +10,17 @@ export default function AdminPaymentPaypalTable({ data, loading }) {
   const [loadingDetails, setLoadingDetails] = useState(false);
   const [error, setError] = useState(null);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return (
+    <div>
+        <Spinner
+            as="span"
+            animation="border"
+            size="sm"
+            role="status"
+            aria-hidden="true"
+        /> Loading...
+    </div>
+  );
   if (!data || data.length === 0) return <p>No data available.</p>;
 
   const formatDate = (dateString) => {
@@ -31,7 +41,6 @@ export default function AdminPaymentPaypalTable({ data, loading }) {
       }
       const paymentDetails = await response.json();
       setSelectedItem(paymentDetails);
-      console.log(paymentDetails);
       setShowModal(true);
     } catch (err) {
       setError(err.message);
@@ -82,9 +91,18 @@ export default function AdminPaymentPaypalTable({ data, loading }) {
       </Table>
 
       {/* 모달 구현 */}
-      <Modal show={showModal} onHide={handleClose} size="lg">
+      <Modal
+        show={showModal} 
+        onHide={handleClose} 
+        className="adminPaymentModal"
+        size="lg" 
+        centered
+      >
           <Modal.Header closeButton>
-            <Modal.Title>PayPal 주문서 상세 정보</Modal.Title>
+            <Modal.Title>
+              PayPal 주문서 상세 정보
+              <span style={{fontSize:"14px", marginLeft:"10px"}}>주문서 내용만 확인 가능합니다.</span>
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             {loadingDetails ? (
@@ -94,16 +112,40 @@ export default function AdminPaymentPaypalTable({ data, loading }) {
             ) : (
               selectedItem && (
                 <>
-                  <p><strong>주문ID:</strong> {selectedItem.id}</p>
-                  <p><strong>PAYPAL주문ID:</strong> {selectedItem.paypalOrderId}</p>
-                  <p><strong>주문상태:</strong> {selectedItem.status}</p>
-                  <p><strong>예약ID:</strong> {selectedItem.reservationId}</p>
-                  <p><strong>총금액:</strong> {selectedItem.amount}</p>
-                  <p><strong>생성일:</strong> {formatDate(selectedItem.createdAt)}</p>
+                  <p>
+                    <strong>주문ID:</strong>
+                    <span className="modal-item-text">{selectedItem.id}</span>
+                  </p>
+                  <p>
+                    <strong>PAYPAL주문ID:</strong>
+                    <span className="modal-item-text">{selectedItem.paypalOrderId}</span>
+                  </p>
+                  <p style={{display:"flex", alignItems:"center"}}>
+                    <strong>주문상태:</strong>
+                    <span className="modal-item-text">{selectedItem.status}</span>
+                  </p>
+                  <p>
+                    <strong>예약ID:</strong>
+                    <span className="modal-item-text">{selectedItem.reservationId}</span>
+                  </p>
+                  <p>
+                    <strong>총금액:</strong>
+                    <span className="modal-item-text">{selectedItem.amount}</span>
+                  </p>
+                  <p>
+                    <strong>생성일:</strong>
+                    <span className="modal-item-text">{formatDate(selectedItem.createdAt)}</span>
+                  </p>
                 </>
               )
             )}
           </Modal.Body>
+          <Modal.Footer>
+            <Button 
+              variant="secondary"
+              onClick={handleClose}
+            >닫기</Button>
+          </Modal.Footer>
       </Modal>
     </div>
   );
