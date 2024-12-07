@@ -1,48 +1,50 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 
-// 쿠키에서 JWT 가져오기
-const getCookie = (name) => {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(";").shift();
-    return null;
-};
-
-// JWT 디코딩
-const decodeJwt = (token) => {
-    try {
-        const base64Payload = token.split(".")[1]; // JWT의 payload 부분 추출
-        const payload = atob(base64Payload); // Base64 디코딩
-        const parsedPayload = JSON.parse(payload); // JSON 파싱
-        console.log("Decoded JWT payload:", parsedPayload); // 디코딩 결과 출력
-        return parsedPayload;
-    } catch (e) {
-        console.error("Invalid JWT:", e); // 디코딩 실패 시 오류 로그 출력
-        return null;
-    }
-};
-
-// PrivateRoute 컴포넌트
 const PrivateRoute = ({ children }) => {
-    const jwt = getCookie("jwt");
-    console.log("JWT from cookie:", jwt);
+    const [loading, setLoading] = useState(true);
+    const [isAdmin, setIsAdmin] = useState(false);
 
-    if (!jwt) {
-        console.error("JWT is missing or invalid");
-        return <Navigate to="/admin/login" replace />;
+    useEffect(() => {
+        const checkAuth = async () => {
+            try {
+                const response = await fetch("http://localhost:8080/api/admin/me", {
+                    method: "GET",
+                    credentials: "include",
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.role === "ADMIN") {
+                        setIsAdmin(true);
+                    } else {
+                        console.error("Unauthorized role:", data.role);
+                    }
+                }
+            } catch (e) {
+                console.error("Error during auth check:", e);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        checkAuth();
+    }, []);
+
+    if (loading) {
+        return (
+            <div style={{ textAlign: "center", marginTop: "50px" }}>
+                <div className="spinner-border" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+            </div>
+        );
     }
 
-    const decoded = decodeJwt(jwt);
-    console.log("Decoded JWT:", decoded);
-
-    if (!decoded || decoded.role !== "ADMIN") {
-        console.error("Access denied: Role is not ADMIN");
+    if (!isAdmin) {
         return <Navigate to="/admin/login" replace />;
     }
 
     return children;
 };
-
 
 export default PrivateRoute;
