@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import AdminBoardsContent from "../components/admin/boards/script/AdminBoardsContent";
 import AdminMemberContent from "../components/admin/member/script/AdminMemberContent";
 import AdminPaymentsContent from "../components/admin/payments/script/AdminPaymentsContent";
@@ -35,19 +35,39 @@ export const RouterInfo = [
     ),
     errorElement: <ErrorPage />,
     children: [
-      { index: true, element: <AdminHomeContent /> },
-      { path: "member", element: <AdminMemberContent /> },
-      { path: "staff", element: <AdminStaffContent /> },
-      { path: "room", element: <AdminRoomContent /> },
-      { path: "reservation", element: <AdminReservationContent /> },
-      { path: "payments", element: <AdminPaymentsContent /> },
-      { path: "boards", element: <AdminBoardsContent /> },
-      { path: "statistics", element: <AdminStatisticsContent /> },
+      {
+        index: true,
+        element: <AdminHomeContent />,
+      },
+      {
+        path: "member",
+        element: <AdminMemberContent />,
+      },
+      {
+        path: "staff",
+        element: <AdminStaffContent />,
+      },
+      {
+        path: "room",
+        element: <AdminRoomContent />,
+      },
+      {
+        path: "reservation",
+        element: <AdminReservationContent />,
+      },
+      {
+        path: "payments",
+        element: <AdminPaymentsContent />,
+      },
+      {
+        path: "boards",
+        element: <AdminBoardsContent />,
+      },
+      {
+        path: "statistics",
+        element: <AdminStatisticsContent />,
+      },
     ],
-  },
-  {
-    path: "*",
-    element: <Navigate to="/admin/login" replace />,
   },
 ];
 

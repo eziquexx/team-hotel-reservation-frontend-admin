@@ -74,7 +74,22 @@ export default function AdminAside() {
                 <span className="menu-text">객실전체목록</span>
               </p>
             </ButtonEx>
+           
+            <ButtonEx
+              id={"room"}
+              url={"/admin/roomtype"}
+              className={"adminAsideMenu adminAsideSubMenu"}
+            >
+              <p>
+                <span className="material-symbols-outlined icons">
+                  check_indeterminate_small
+                </span>
+                <span className="menu-text">객실타입목록</span>
+              </p>
+            </ButtonEx>
+        
           </Accordion.Body>
+        
         </Accordion.Item>
         <Accordion.Item eventKey="3">
           <Accordion.Header>
