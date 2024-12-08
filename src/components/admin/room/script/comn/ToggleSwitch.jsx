@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import '../css/ToggleSwitch.css';
+import '../../css/ToggleSwitch.css';
 
-export default function ToggleSwitch({ isChecked, onToggle }) {
+export default function ToggleSwitch({ isChecked, onToggle,labelOn="ON",labelOff="OFF" }) {
    return(
    <button className={`toggle-switch ${isChecked ? "on":"off"}`} onClick={() => onToggle(!isChecked)}>
-    {isChecked ? "사용가능" : "사용중"}
+    {isChecked ? labelOn : labelOff}
     <div className="toggle-handle"></div>
    </button>
    )
