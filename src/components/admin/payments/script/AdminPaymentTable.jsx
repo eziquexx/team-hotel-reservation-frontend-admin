@@ -7,14 +7,17 @@ export default function AdminPaymentTable({ data, loading }) {
   const [items, setItems] = useState(data);
   const [showModal, setShowModal] = useState(false);
   const [smDeleteAlert, setSmDeleteAlert] = useState(false);
+  const [smStatusChangeAlert, setSmStatusChangeAlert] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [itemStatus, setItemStatus] = useState('');
   const [loadingDetails, setLoadingDetails] = useState(false);
   const [error, setError] = useState(null);
   const [delError, setDelError] = useState(null);
   const [delSuccess, setDelSuccess] = useState(null);
+  const [saveError, setSaveError] = useState(null);
+  const [saveSuccess, setSaveSuccess] = useState(null);
   const [isDeleted, setIsDeleted] = useState(false);
-
-  console.log("test", items);
+  const [isSaved, setIsSaved] = useState(false);
 
   if (loading) return (
     <div>
@@ -47,6 +50,7 @@ export default function AdminPaymentTable({ data, loading }) {
       }
       const paymentDetails = await response.json();
       setSelectedItem(paymentDetails);
+      setItemStatus(paymentDetails.paymentStatus);
       setShowModal(true);
     } catch (err) {
       setError(err.message);
@@ -63,9 +67,57 @@ export default function AdminPaymentTable({ data, loading }) {
 
   const handleClose2 = () => {
     setSmDeleteAlert(false);
+    setSmStatusChangeAlert(false);
     setShowModal(false);
     setSelectedItem(null);
   }
+
+  // 상태값 변경되는대로 저장
+  const handleSelectChange = (event) => {
+    const newStatus = event.target.value;
+    setItemStatus(newStatus);
+  }
+
+  // 상태값 change modal
+  const statusSaveAlert = () => {
+    setSmStatusChangeAlert(true); // 삭제알림창오픈
+  }
+
+  // 상태값 db에 update
+  const updateStatus = async(paymentId, newStatus) => {
+    // 상태값 update api 호출
+    try {
+      const response = await fetch(`http://localhost:8080/api/payments/${paymentId}/status?newStatus=${newStatus}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      
+      if (response.ok) {
+        const result = await response.text();
+        console.log('Payment status updated successfully:', result);
+        
+        setItems((prevItems) => 
+          prevItems.map((item) => 
+            item.paymentId === paymentId ? 
+            { ...item, paymentStatus: newStatus }
+            : item
+          )
+        );
+        
+        setSaveSuccess(result.message || "상태가 성공적으로 변경되었습니다.");
+        setIsSaved(true);
+      } else {
+        console.error('Failed to update payment status:', data);
+        return null;
+      }
+    } catch (err) {
+      console.error('Error updating payment status:', error);
+      setSaveError(err.message || "예기치 않은 오류가 발생했습니다.");
+    }
+  }
+
 
   // row delete modal
   const rowDeleteAlert = () => {
@@ -87,7 +139,7 @@ export default function AdminPaymentTable({ data, loading }) {
         throw new Error("삭제 요청에 실패했습니다.");
       }
       const result = await response.text();
-      setDelSuccess(result.message || "삭제가 성공적으로 완료뢰었습니다.");
+      setDelSuccess(result.message || "삭제가 성공적으로 완료되었습니다.");
 
       setItems(items.filter(item => item.paymentId !== selectedItem.paymentId));
       setIsDeleted(true); // 삭제 성공시 상태 설정
@@ -109,6 +161,7 @@ export default function AdminPaymentTable({ data, loading }) {
         <thead className="table-light">
           <tr>
             <th>결제ID</th>
+            <th>주문ID</th>
             <th>예약ID</th>
             <th>회원ID</th>
             <th>회원이름</th>
@@ -127,8 +180,9 @@ export default function AdminPaymentTable({ data, loading }) {
               style={{ cursor: 'pointer' }}
             >
               <td>{item.paymentId}</td>
+              <td>{item.orderId}</td>
               <td>{item.reservationId}</td>
-              <td>{item.memberId}</td>
+              <td>{item.userId}</td>
               <td>{item.memberName}</td>
               <td>{item.paymentMethod}</td>
               <td>{item.paymentStatus}</td>
@@ -152,7 +206,7 @@ export default function AdminPaymentTable({ data, loading }) {
           <Modal.Header closeButton>
             <Modal.Title>
               결제 상세 정보
-              <span style={{fontSize:"14px", marginLeft:"10px"}}>상태 변경/삭제를 할 수 있습니다.</span>
+              <span style={{fontSize:"14px", marginLeft:"10px"}}>상태 변경(취소)/삭제 가능합니다.</span>
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -181,7 +235,23 @@ export default function AdminPaymentTable({ data, loading }) {
                   </p>
                   <p style={{display:"flex", alignItems:"center"}}>
                     <strong>결제상태:</strong>
-                    <span className="modal-item-text">{selectedItem.paymentStatus}</span>
+                    <span 
+                      className="modal-item-text"
+                      style={{width:"90px"}}
+                    >
+                        {itemStatus}</span>
+                    <select 
+                      className="form-select form-select-sm" 
+                      aria-label="Default select example"
+                      style={{width:"130px", marginLeft:"10px"}}
+                      value={itemStatus}
+                      onChange={handleSelectChange}
+                    >
+                      <option value="" selected>--- 선택 ---</option>
+                      <option value="PENDING">PENDING</option>
+                      <option value="COMPLETED">COMPLETED</option>
+                      <option value="CANCELLED">CANCELLED</option>
+                    </select>
                   </p>
                   <p>
                     <strong>총금액:</strong>
@@ -205,11 +275,16 @@ export default function AdminPaymentTable({ data, loading }) {
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>취소</Button>
-            <Button variant="primary"style={{display:"flex", alignItems:"center"}}>
+            <Button 
+              variant="primary"
+              style={{display:"flex", alignItems:"center"}}
+              onClick={statusSaveAlert}
+            >
               <span 
                 className="material-symbols-outlined" 
-                style={{fontSize:"16px", marginRight:"2px"}}>
-                  check
+                style={{fontSize:"16px", marginRight:"2px"}}
+              >
+                check
               </span>
               저장
             </Button>
@@ -219,15 +294,59 @@ export default function AdminPaymentTable({ data, loading }) {
               onClick={rowDeleteAlert}
               className="me-2"
             >
-              <span 
-                className="material-symbols-outlined"
-                style={{fontSize:"16px", marginRight:"2px"}}
-              >
+              <span className="material-symbols-outlined" style={{fontSize:"16px", marginRight:"2px"}}>
                 delete
               </span>
               삭제
             </Button>
           </Modal.Footer>
+      </Modal>
+
+      {/* save modal 구현 */}
+      <Modal
+        size="sm"
+        show={smStatusChangeAlert}
+        onHide={() => setSmStatusChangeAlert(false)}
+        aria-labelledby="example-modal-sizes-title-sm"
+        centered
+        style={{zIndex:"1055"}}
+      >
+        <Modal.Body 
+          className="text-center"
+          style={{margin:"20px 0"}}
+        >
+          {isSaved ? (
+            <p style={{ color: "green "}}>
+              상태가 성공적으로 변경되었습니다!
+            </p>
+          ) : (
+            <>
+              정말로 상태를 하시겠습니까?
+              {saveError && <p style={{ color: "red"}}>{saveError}</p>}
+              {saveSuccess && <p style={{ color: "green"}}>{saveSuccess}</p>}
+            </>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          {isSaved ? (
+            <Button variant="secondary" onClick={handleClose2}>
+              닫기
+            </Button>
+          ) : (
+            <>
+              <Button variant="secondary" onClick={handleClose2}>
+                취소
+              </Button>
+              <Button 
+                variant="primary"
+                style={{display:"flex", alignItems:"center"}}
+                onClick={() => updateStatus(selectedItem.paymentId, itemStatus)}
+                className="me-2"
+              >저장
+              </Button>
+            </>
+          )}
+        </Modal.Footer>
       </Modal>
 
       {/* delete modal 구현 */}
