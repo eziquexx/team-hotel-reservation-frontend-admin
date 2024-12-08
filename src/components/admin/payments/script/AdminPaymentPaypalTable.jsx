@@ -7,6 +7,7 @@ import Table from "react-bootstrap/Table";
 export default function AdminPaymentPaypalTable({ data, loading }) {  
   const [showModal, setShowModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [itemStatus, setItemStatus] = useState('');
   const [loadingDetails, setLoadingDetails] = useState(false);
   const [error, setError] = useState(null);
 
@@ -41,6 +42,7 @@ export default function AdminPaymentPaypalTable({ data, loading }) {
       }
       const paymentDetails = await response.json();
       setSelectedItem(paymentDetails);
+      setItemStatus(paymentDetails.status);
       setShowModal(true);
     } catch (err) {
       setError(err.message);
@@ -55,6 +57,11 @@ export default function AdminPaymentPaypalTable({ data, loading }) {
     setSelectedItem(null);
   }
 
+  // 상태값 변경
+  const handleSelectChange = (event) => {
+    setItemStatus(event.target.value);
+  }
+
   return (
     <div className="table-height-fixed">
       <Table
@@ -65,9 +72,9 @@ export default function AdminPaymentPaypalTable({ data, loading }) {
         <thead className="table-light">
           <tr>
             <th>주문ID</th>
+            <th>예약ID</th>
             <th>PAYPAL주문ID</th>
             <th>주문상태</th>
-            <th>예약ID</th>
             <th>총금액</th>
             <th>생성일</th>
           </tr>
@@ -80,9 +87,9 @@ export default function AdminPaymentPaypalTable({ data, loading }) {
               style={{ cursor: 'pointer' }}
             >
               <td>{item.id}</td>
+              <td>{item.reservationId}</td>
               <td>{item.paypalOrderId}</td>
               <td>{item.status}</td>
-              <td>{item.reservationId}</td>
               <td>{item.amount}</td>
               <td>{formatDate(item.createdAt)}</td>
             </tr>
@@ -101,7 +108,7 @@ export default function AdminPaymentPaypalTable({ data, loading }) {
           <Modal.Header closeButton>
             <Modal.Title>
               PayPal 주문서 상세 정보
-              <span style={{fontSize:"14px", marginLeft:"10px"}}>주문서 내용만 확인 가능합니다.</span>
+              <span style={{fontSize:"14px", marginLeft:"10px"}}>상태 변경(취소) 가능합니다.</span>
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -117,17 +124,29 @@ export default function AdminPaymentPaypalTable({ data, loading }) {
                     <span className="modal-item-text">{selectedItem.id}</span>
                   </p>
                   <p>
+                    <strong>예약ID:</strong>
+                    <span className="modal-item-text">{selectedItem.reservationId}</span>
+                  </p>
+                  <p>
                     <strong>PAYPAL주문ID:</strong>
                     <span className="modal-item-text">{selectedItem.paypalOrderId}</span>
                   </p>
                   <p style={{display:"flex", alignItems:"center"}}>
                     <strong>주문상태:</strong>
-                    <span className="modal-item-text">{selectedItem.status}</span>
-                  </p>
-                  <p>
-                    <strong>예약ID:</strong>
-                    <span className="modal-item-text">{selectedItem.reservationId}</span>
-                  </p>
+                    <span className="modal-item-text">{itemStatus}</span>
+                    <select 
+                      className="form-select form-select-sm" 
+                      aria-label="Default select example"
+                      style={{width:"130px", marginLeft:"10px"}}
+                      value={itemStatus}
+                      onChange={handleSelectChange}
+                    >
+                      <option value="" selected>--- 선택 ---</option>
+                      <option value="PENDING">PENDING</option>
+                      <option value="COMPLETED">COMPLETED</option>
+                      <option value="CANCELLED">CANCELLED</option>
+                    </select>
+                  </p>            
                   <p>
                     <strong>총금액:</strong>
                     <span className="modal-item-text">{selectedItem.amount}</span>
@@ -141,10 +160,15 @@ export default function AdminPaymentPaypalTable({ data, loading }) {
             )}
           </Modal.Body>
           <Modal.Footer>
-            <Button 
-              variant="secondary"
-              onClick={handleClose}
-            >닫기</Button>
+            <Button variant="secondary" onClick={handleClose}>취소</Button>
+            <Button variant="primary"style={{display:"flex", alignItems:"center"}}>
+              <span 
+                className="material-symbols-outlined" 
+                style={{fontSize:"16px", marginRight:"2px"}}>
+                  check
+              </span>
+              저장
+            </Button>
           </Modal.Footer>
       </Modal>
     </div>
