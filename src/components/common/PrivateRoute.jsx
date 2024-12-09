@@ -34,7 +34,7 @@ const PrivateRoute = ({ children }) => {
         return (
             <div style={{ textAlign: "center", marginTop: "50px" }}>
                 <div className="spinner-border" role="status">
-                    <span className="sr-only">Loading...</span>
+                    <span className="sr-only"></span>
                 </div>
             </div>
         );
