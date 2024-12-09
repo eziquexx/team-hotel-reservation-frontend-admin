@@ -1,0 +1,178 @@
+/* 전체 컨테이너 */
+.login-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    background-size: 400% 400%;
+    animation: gradientBackground 10s ease infinite;
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+    overflow: hidden; /* 구름이 화면을 넘지 않도록 제한 */
+}
+
+/* 배경 그라데이션 애니메이션 */
+@keyframes gradientBackground {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* 구름 레이어 */
+.cloud-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none; /* 구름과 사용자 인터페이스 간 충돌 방지 */
+}
+
+/* 구름 */
+.cloud {
+    position: absolute;
+    top: calc(50% - 50px); /* 화면 중간을 기준으로 배치 */
+    width: 200px;
+    height: 100px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    filter: blur(20px);
+    animation: floatCloud 30s linear infinite;
+    z-index: 1;
+}
+
+/* 각 구름의 위치와 크기를 다르게 설정 */
+.cloud:nth-child(1) {
+    top: 10%;
+    left: -20%;
+    width: 250px;
+    height: 120px;
+    animation-delay: 0s;
+}
+.cloud:nth-child(2) {
+    top: 30%;
+    left: -40%;
+    width: 300px;
+    height: 150px;
+    animation-delay: 5s;
+}
+.cloud:nth-child(3) {
+    top: 70%;
+    left: -10%;
+    width: 200px;
+    height: 100px;
+    animation-delay: 10s;
+}
+
+/* 구름 이동 애니메이션 */
+@keyframes floatCloud {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(150vw);
+    }
+}
+
+/* 로그인 카드 */
+.login-card {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    z-index: 10; /* 구름 위로 카드 배치 */
+}
+
+/*.login-card:hover {*/
+/*    transform: scale(1.05);*/
+/*    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);*/
+/*}*/
+
+/* 제목 */
+.login-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+/* 에러 메시지 */
+.login-error {
+    color: #ff6b6b;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+}
+
+/* 폼 */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* 입력 그룹 */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+/* 라벨 */
+.login-label {
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    color: #fff;
+}
+
+/* 입력 필드 */
+.login-input {
+    padding: 12px;
+    border-radius: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    font-size: 1rem;
+    outline: none;
+    transition: background 0.3s ease, border 0.3s ease;
+}
+
+.login-input:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+.login-input:focus {
+    border: 1px solid #fff;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* 버튼 */
+.login-button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 25px;
+    background: linear-gradient(135deg, #ff6b6b, #ff8c42);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+}
+
+.login-button:hover {
+    background: linear-gradient(135deg, #ff8c42, #ff6b6b);
+    box-shadow: 0 8px 25px rgba(255, 107, 107, 0.6);
+}
+
+.login-button:active {
+    transform: scale(0.95);
+    box-shadow: 0 3px 10px rgba(255, 107, 107, 0.4);
+}

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "../components/common/css/AdminLoginPage.css";
 
 const AdminLoginPage = () => {
     const [staffUserId, setStaffUserId] = useState("");
@@ -41,32 +42,37 @@ const AdminLoginPage = () => {
 
 
     return (
-        <div style={{ maxWidth: "400px", margin: "0 auto", padding: "20px" }}>
-            <h1>Admin Login</h1>
-            {error && <p style={{ color: "red" }}>{error}</p>}
-            <form onSubmit={handleLogin}>
-                <div>
-                    <label>Staff User ID:</label>
-                    <input
-                        type="text"
-                        value={staffUserId}
-                        onChange={(e) => setStaffUserId(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Password:</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </div>
-                <button type="submit">Login</button>
-            </form>
+        <div className="login-container">
+            <div className="login-card">
+                <h1 className="login-title">HJ HOTEL <br/>관리자 로그인</h1>
+                {error && <p className="login-error">{error}</p>}
+                <form onSubmit={handleLogin} className="login-form">
+                    <div className="input-group">
+                        <label className="login-label">ID:</label>
+                        <input
+                            type="text"
+                            value={staffUserId}
+                            onChange={(e) => setStaffUserId(e.target.value)}
+                            className="login-input"
+                            required
+                        />
+                    </div>
+                    <div className="input-group">
+                        <label className="login-label">Password:</label>
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="login-input"
+                            required
+                        />
+                    </div>
+                    <button type="submit" className="login-button">Login</button>
+                </form>
+            </div>
         </div>
     );
 };
+
 
 export default AdminLoginPage;
