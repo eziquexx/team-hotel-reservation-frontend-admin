@@ -1,9 +1,11 @@
-// AdminHomeContent
+import "../css/AdminBoardsContent.css";
+import AdminNoticeList from "./AdminNoticeList";
+
+// AdminMemberContent
 export default function AdminBoardsContent() {
   return (
-    <div>
-      <h1>게시판관리</h1>
-      <div>게시판관리</div>
+    <div id="adminBoardsContent">
+      <AdminNoticeList />
     </div>
   );
 }
