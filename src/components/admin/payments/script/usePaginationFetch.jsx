@@ -10,7 +10,7 @@ export default function usePaginationFetch(urlTest) {
   const [totalElements, setTotalElements] = useState(0); // 총 페이지 개수
   const [page, setPage] = useState(1); // 현재 페이지
   const size = 10; // 한 페이지에 표시할 항목 개수
-  const fetchUrl = `http://localhost:8080/api/${urlTest}?page=${page}&size=${size}`;
+  const fetchUrl = `http://localhost:8080/api/admin/${urlTest}?page=${page}&size=${size}`;
   
 
   useEffect(() => {

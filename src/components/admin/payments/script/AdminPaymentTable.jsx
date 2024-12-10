@@ -44,7 +44,7 @@ export default function AdminPaymentTable({ data, loading }) {
     setError(null);
 
     try {
-      const response = await fetch(`http://localhost:8080/api/payments/${itemId}/details`);
+      const response = await fetch(`http://localhost:8080/api/admin/payments/${itemId}/details`);
       if (!response.ok) {
         throw new Error("Failed to fetch ayment details.");
       }
@@ -87,7 +87,7 @@ export default function AdminPaymentTable({ data, loading }) {
   const updateStatus = async(paymentId, newStatus) => {
     // 상태값 update api 호출
     try {
-      const response = await fetch(`http://localhost:8080/api/payments/${paymentId}/status?newStatus=${newStatus}`, {
+      const response = await fetch(`http://localhost:8080/api/admin/payments/${paymentId}/status?newStatus=${newStatus}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -128,7 +128,7 @@ export default function AdminPaymentTable({ data, loading }) {
   const rowRealDelete = async () => {
     // 삭제 api 호출
     try {
-      const response = await fetch(`http://localhost:8080/api/payments/${selectedItem.paymentId}`, {
+      const response = await fetch(`http://localhost:8080/api/admin/payments/${selectedItem.paymentId}`, {
         method: "DELETE",
         headers: {
           "Content-Type" : "application/json",

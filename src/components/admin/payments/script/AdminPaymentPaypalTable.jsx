@@ -35,7 +35,7 @@ export default function AdminPaymentPaypalTable({ data, loading }) {
     setError(null);
 
     try {
-      const response = await fetch(`http://localhost:8080/api/payments/paypal/${itemId}/details`);
+      const response = await fetch(`http://localhost:8080/api/admin/payments/paypalOrders/${itemId}/details`);
       if (!response.ok) {
         throw new Error("Failed to fetch ayment details.");
       }
