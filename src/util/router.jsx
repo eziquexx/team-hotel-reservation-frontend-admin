@@ -72,6 +72,16 @@ export const RouterInfo = [
       {
         path: "boards",
         element: <AdminBoardsContent />,
+        children: [
+          {
+            path: "",
+            element: <AdminNoticeList />
+          },
+          {
+            path: ":noticeId",
+            element: <AdminNoticeDetailPage />
+          }
+        ]
       },
       {
         path: "statistics",
