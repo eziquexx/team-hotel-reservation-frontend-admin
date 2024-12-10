@@ -5,7 +5,7 @@ import usePaginationFetch from "./usePaginationFetch";
 
 // 24.12.06 지은 : PayPal 주문내역 pagination 기능 fin.
 export default function AdminPaymentsPaypalList() {
-    const urlTest = `payments/paypal`;
+    const urlTest = `payments/paypalOrders`;
     const {
       data,
       loading,
