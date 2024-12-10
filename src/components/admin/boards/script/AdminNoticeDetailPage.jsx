@@ -12,7 +12,7 @@ export default function AdminNoticeDetailPage() {
     useEffect(() => {
         const fetchNotice = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/api/notices/${noticeId}`);
+                const response = await fetch(`http://localhost:8080/api/admin/notices/${noticeId}`);
                 const data = await response.json();
                 setData(data);
                 setSelectedValue(data.isImportant ? '1' : '0');
