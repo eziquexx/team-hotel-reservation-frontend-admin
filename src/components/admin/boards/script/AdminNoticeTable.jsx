@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { Spinner } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
+import { useNavigate } from "react-router-dom";
 
 // 24.12.06 지은 : 결제내역 테이블 fin. 상세내역 모달창 작업 fin.
 export default function AdminNoticeTable({ data, loading }) {  
-
-  console.log(data);
-  console.log(data[0].isImportant);
-
+  const [ notices, setNotices ] = useState([]);
+  const navigate = useNavigate();
 
   if (loading) return (
     <div>
@@ -27,6 +26,12 @@ export default function AdminNoticeTable({ data, loading }) {
     const formattedDate = date.toISOString().replace('T', ' ').split('.')[0];
     return formattedDate;
   }
+
+  // 게시글 클릭시 상세 페이지로 이동
+  const handleNoticeClick = (noticeId) => {
+    navigate(`/admin/boards/${noticeId}`);
+  }
+
 
   return (
     <div className="table-height-fixed">
@@ -50,6 +55,7 @@ export default function AdminNoticeTable({ data, loading }) {
           {data.map((item) => (
             <tr 
               key={item.noticeId}
+              onClick={() => handleNoticeClick(item.noticeId)}
               style={{ cursor: 'pointer' }}
             >
               <td className="table-cell">{item.noticeId}</td>
