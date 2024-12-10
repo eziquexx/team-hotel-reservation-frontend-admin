@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Col, Form, Row } from "react-bootstrap";
+import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 
 export default function AdminNoticeDetailPage() {
@@ -8,6 +8,9 @@ export default function AdminNoticeDetailPage() {
     const [ selectedValue, setSelectedValue ] = useState('');
     const [ loading, setLoading ] = useState(true);
     const [ error, setError ] = useState(null);
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
     
     useEffect(() => {
         const fetchNotice = async () => {
@@ -44,10 +47,14 @@ export default function AdminNoticeDetailPage() {
 
     console.log(data);
 
+    // 뒤로가기 modal
+    const handleMoveBack = () => {
+        
+    };
+
     return (
         <> 
             <div>
-
                 <Form style={{border: "1px solid #ddd"}}>
                     <Form.Group as={Row} className="mb-3" controlId="">
                         <Form.Label column sm={1}>게시판 ID</Form.Label>
@@ -110,12 +117,25 @@ export default function AdminNoticeDetailPage() {
                     </Form.Group>
 
                     <div>
-                        <Button variant="secondary">뒤로</Button>
+                        <Button variant="secondary" onClick={handleShow}>뒤로</Button>
                         <Button variant="primary">수정</Button>
                         <Button variant="danger">삭제</Button>
                     </div>
                 </Form>
             </div>
+            <Modal show={show} onHide={handleClose} centered>
+                <Modal.Body style={{margin: "20px 0"}} className="text-center">
+                    수정 사항이 있습니다.<br/>그래도 이전 페이지로 이동하시겠습니까?
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        닫기
+                    </Button>
+                    <Button variant="primary" onClick={handleMoveBack}>
+                        이동
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </>
     );
 }
