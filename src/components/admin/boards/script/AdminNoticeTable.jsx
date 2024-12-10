@@ -4,20 +4,10 @@ import Table from "react-bootstrap/Table";
 
 // 24.12.06 지은 : 결제내역 테이블 fin. 상세내역 모달창 작업 fin.
 export default function AdminNoticeTable({ data, loading }) {  
-  const [items, setItems] = useState(data);
-  const [showModal, setShowModal] = useState(false);
-  const [smDeleteAlert, setSmDeleteAlert] = useState(false);
-  const [smStatusChangeAlert, setSmStatusChangeAlert] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
-  const [itemStatus, setItemStatus] = useState('');
-  const [loadingDetails, setLoadingDetails] = useState(false);
-  const [error, setError] = useState(null);
-  const [delError, setDelError] = useState(null);
-  const [delSuccess, setDelSuccess] = useState(null);
-  const [saveError, setSaveError] = useState(null);
-  const [saveSuccess, setSaveSuccess] = useState(null);
-  const [isDeleted, setIsDeleted] = useState(false);
-  const [isSaved, setIsSaved] = useState(false);
+
+  console.log(data);
+  console.log(data[0].isImportant);
+
 
   if (loading) return (
     <div>
@@ -65,7 +55,7 @@ export default function AdminNoticeTable({ data, loading }) {
               <td className="table-cell">{item.noticeId}</td>
               <td className="table-cell text-start">{item.title}</td>
               <td className="table-cell">{item.category}</td>
-              <td className="table-cell">{item.isImportant}</td>
+              <td className="table-cell">{item.isImportant ? '중요' : '보통'}</td>
               <td className="table-cell">{item.views}</td>
               <td className="table-cell">{formatDate(item.createdAt)}</td>
               <td className="table-cell">{formatDate(item.updatedAt)}</td>
