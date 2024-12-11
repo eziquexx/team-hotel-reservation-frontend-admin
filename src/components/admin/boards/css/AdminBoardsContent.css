@@ -23,3 +23,7 @@
   overflow: hidden;          /* 넘치는 텍스트는 숨김 처리 */
   text-overflow: ellipsis;   /* 넘치는 텍스트는 '...'으로 표시 */
 }
+#adminBoardsContent .detailFormWrap {
+  padding: 20px;
+  border: 1px solid #ddd;
+}

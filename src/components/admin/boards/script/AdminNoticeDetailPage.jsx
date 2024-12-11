@@ -1,24 +1,29 @@
 import { useEffect, useState } from "react";
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import AdminNoticeMoveBackModal from "./AdminNoticeMoveBackModal";
 
 export default function AdminNoticeDetailPage() {
+    const navigate = useNavigate();
     const { noticeId } = useParams();
-    const [ data, setData ] = useState(null);
+    const [ originalData, setOriginalData ] = useState(null); // 원본 데이터 저장
+    const [ data, setData ] = useState(null); // 수정 데이터 저장
     const [ selectedValue, setSelectedValue ] = useState('');
     const [ loading, setLoading ] = useState(true);
     const [ error, setError ] = useState(null);
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const [showModal, setShowModal] = useState(false);
+    // const handleClose = () => setShow(false);
+    // const handleShow = () => setShow(true);
     
     useEffect(() => {
         const fetchNotice = async () => {
             try {
                 const response = await fetch(`http://localhost:8080/api/admin/notices/${noticeId}`);
                 const data = await response.json();
-                setData(data);
+                setData(data); // fetch문으로 가져온 데이터 저장
+                setOriginalData(data); // 원본으로도 저장하기
                 setSelectedValue(data.isImportant ? '1' : '0');
+                // setSelectedValue(data.importance.toString()); // 중요도 설정 (API에 따라 필드명 수정 필요)
                 setLoading(false);
             } catch (error) {
                 setError(error.message);
@@ -41,21 +46,45 @@ export default function AdminNoticeDetailPage() {
         return formattedDate;
     }
 
-    const handleChange = (event) => {
-        setSelectedValue(event.target.value);  // 선택된 값 상태 업데이트
+    // input 변경 핸들러
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setData({ ...data, [name]: value });
+    };
+
+    // 중요도 변경 핸들러
+    const handleImportanceChange = (e) => {
+        setSelectedValue(e.target.value);
+        setData({ ...data, isImportant: e.target.value === '1' }); 
     };
 
     console.log(data);
 
+    // 모달창 닫기
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
+
+
     // 뒤로가기 modal
     const handleMoveBack = () => {
-        
+        // 수정 여부 확인
+        if (JSON.stringify(data) !== JSON.stringify(originalData)) {
+            setShowModal(true);
+        } else {
+            navigate(-1);
+        }
+    };
+
+    const handleConfirmMoveBack = () => {
+        setShowModal(false);
+        navigate(-1);
     };
 
     return (
         <> 
             <div>
-                <Form style={{border: "1px solid #ddd"}}>
+                <Form className="detailFormWrap">
                     <Form.Group as={Row} className="mb-3" controlId="">
                         <Form.Label column sm={1}>게시판 ID</Form.Label>
                         <Col sm={2}>
@@ -66,7 +95,7 @@ export default function AdminNoticeDetailPage() {
                             <Form.Select 
                                 aria-label="Default select example" 
                                 value={selectedValue}
-                                onChange={handleChange}
+                                onChange={handleImportanceChange}
                             >
                                 <option value="">-- 선택 --</option>
                                 <option value="1">중요</option>
@@ -100,7 +129,11 @@ export default function AdminNoticeDetailPage() {
                     <Form.Group as={Row} className="mb-3" controlId="">
                         <Form.Label column sm={1}>제목</Form.Label>
                         <Col sm={6}>
-                            <Form.Control type="text" defaultValue={data.title} />
+                            <Form.Control 
+                                type="text" 
+                                value={data.title} 
+                                onChange={handleInputChange}
+                            />
                         </Col>
                     </Form.Group>
 
@@ -109,7 +142,8 @@ export default function AdminNoticeDetailPage() {
                         <Col sm={6}>
                             <Form.Control 
                                 as="textarea" 
-                                defaultValue={data.content} 
+                                value={data.content} 
+                                onChange={handleInputChange}
                                 style={{resize: "none", }}
                                 rows= "14"
                             />
@@ -117,25 +151,19 @@ export default function AdminNoticeDetailPage() {
                     </Form.Group>
 
                     <div>
-                        <Button variant="secondary" onClick={handleShow}>뒤로</Button>
+                        <Button variant="secondary" onClick={handleMoveBack}>뒤로</Button>
                         <Button variant="primary">수정</Button>
                         <Button variant="danger">삭제</Button>
                     </div>
                 </Form>
             </div>
-            <Modal show={show} onHide={handleClose} centered>
-                <Modal.Body style={{margin: "20px 0"}} className="text-center">
-                    수정 사항이 있습니다.<br/>그래도 이전 페이지로 이동하시겠습니까?
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        닫기
-                    </Button>
-                    <Button variant="primary" onClick={handleMoveBack}>
-                        이동
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+
+            {/* 뒤로가기 버튼 클릭시 나오는 modal */}
+            <AdminNoticeMoveBackModal 
+                showModal={showModal}
+                handleCloseModal={handleCloseModal}
+                handleConfirmMoveBack={handleConfirmMoveBack}
+            />
         </>
     );
 }
