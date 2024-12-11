@@ -115,7 +115,7 @@ export default function AdminRoomContent() {
             value={date}
             onChange={(e) => setDate(e.target.value)}
         />
-        <label htmlFor="status">객실 상태 : </label>
+        <label htmlFor="status">객실 예약 상태 : </label>
         <select
             id="status"
             value={resStatus}
