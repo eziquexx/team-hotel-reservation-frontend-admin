@@ -12,7 +12,8 @@ export default function AdminNoticeDetailPage() {
     const [ selectedCategory, setSelectedCategory ] = useState('');
     const [ loading, setLoading ] = useState(true);
     const [ error, setError ] = useState(null);
-    const [showModal, setShowModal] = useState(false);
+    const [ showModal, setShowModal ] = useState(false);
+    const [ showSaveModal, setShowSaveModal ] = useState(false);
     // const handleClose = () => setShow(false);
     // const handleShow = () => setShow(true);
     
@@ -71,6 +72,7 @@ export default function AdminNoticeDetailPage() {
     // 모달창 닫기
     const handleCloseModal = () => {
         setShowModal(false);
+        setShowSaveModal(false);
     };
 
 
@@ -88,6 +90,18 @@ export default function AdminNoticeDetailPage() {
         setShowModal(false);
         navigate(-1);
     };
+
+    // 수정 모달
+    const handleEditModal = () => {
+        setShowSaveModal(true);
+    }
+
+    // 수정 내용 DB에 저장 handler
+    const handleSaveChanges = async () => {
+
+    }
+
+
 
     return (
         <> 
@@ -167,8 +181,19 @@ export default function AdminNoticeDetailPage() {
                     </Form.Group>
 
                     <div>
-                        <Button variant="secondary" onClick={handleMoveBack}>뒤로</Button>
-                        <Button variant="primary">수정</Button>
+                        <Button 
+                            variant="secondary" 
+                            onClick={handleMoveBack}
+                        >
+                            뒤로
+                        </Button>
+                        <Button 
+                            variant="primary" 
+                            onClick={handleEditModal} 
+                            // disabled={isEditButtonDisabled}
+                        >
+                            수정
+                        </Button>
                         <Button variant="danger">삭제</Button>
                     </div>
                 </Form>
@@ -180,6 +205,21 @@ export default function AdminNoticeDetailPage() {
                 handleCloseModal={handleCloseModal}
                 handleConfirmMoveBack={handleConfirmMoveBack}
             />
+
+            {/* 수정 확인 모달 */}
+            <Modal show={showSaveModal} onHide={handleCloseModal} centered>
+                <Modal.Body>
+                    <p>수정된 내용을 저장하시겠습니까?</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseModal}>
+                        아니오
+                    </Button>
+                    <Button variant="primary" onClick={handleSaveChanges}>
+                        예
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </>
     );
 }
