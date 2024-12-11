@@ -8,7 +8,8 @@ export default function AdminNoticeDetailPage() {
     const { noticeId } = useParams();
     const [ originalData, setOriginalData ] = useState(null); // 원본 데이터 저장
     const [ data, setData ] = useState(null); // 수정 데이터 저장
-    const [ selectedValue, setSelectedValue ] = useState('');
+    const [ selectedImportant, setSelectedImportant ] = useState('');
+    const [ selectedCategory, setSelectedCategory ] = useState('');
     const [ loading, setLoading ] = useState(true);
     const [ error, setError ] = useState(null);
     const [showModal, setShowModal] = useState(false);
@@ -22,7 +23,8 @@ export default function AdminNoticeDetailPage() {
                 const data = await response.json();
                 setData(data); // fetch문으로 가져온 데이터 저장
                 setOriginalData(data); // 원본으로도 저장하기
-                setSelectedValue(data.isImportant ? '1' : '0');
+                setSelectedImportant(data.isImportant ? '1' : '0');
+                setSelectedCategory(data.category);
                 // setSelectedValue(data.importance.toString()); // 중요도 설정 (API에 따라 필드명 수정 필요)
                 setLoading(false);
             } catch (error) {
@@ -52,11 +54,17 @@ export default function AdminNoticeDetailPage() {
         setData({ ...data, [name]: value });
     };
 
-    // 중요도 변경 핸들러
+    // 중요도 변경 handler
     const handleImportanceChange = (e) => {
-        setSelectedValue(e.target.value);
+        setSelectedImportant(e.target.value);
         setData({ ...data, isImportant: e.target.value === '1' }); 
     };
+
+    // 카테고리 변경 handler
+    const handleCategoryChange = (e) => {
+        setSelectedCategory(e.target.value);
+        setData({ ...data, category: e.target.value });
+    }
 
     console.log(data);
 
@@ -94,7 +102,7 @@ export default function AdminNoticeDetailPage() {
                         <Col sm={2}>
                             <Form.Select 
                                 aria-label="Default select example" 
-                                value={selectedValue}
+                                value={selectedImportant}
                                 onChange={handleImportanceChange}
                             >
                                 <option value="">-- 선택 --</option>
@@ -107,7 +115,15 @@ export default function AdminNoticeDetailPage() {
                     <Form.Group as={Row} className="mb-3" controlId="">
                         <Form.Label column sm={1}>카테고리</Form.Label>
                         <Col sm={2}>
-                            <Form.Control plaintext readOnly defaultValue={data.category} />
+                            <Form.Select 
+                                value={selectedCategory}
+                                onChange={handleCategoryChange}
+                            >
+                                <option value="">-- 선택 --</option>
+                                <option value="NOTICE">NOTICE</option>
+                                <option value="EVENT">EVENT</option>
+                                <option value="INFO">INFO</option>
+                            </Form.Select>
                         </Col>
                         <Form.Label column sm={1}>조회수</Form.Label>
                         <Col sm={2}>
