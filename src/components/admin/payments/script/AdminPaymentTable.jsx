@@ -44,7 +44,10 @@ export default function AdminPaymentTable({ data, loading }) {
     setError(null);
 
     try {
-      const response = await fetch(`http://localhost:8080/api/admin/payments/${itemId}/details`);
+      const response = await fetch(`http://localhost:8080/api/admin/payments/${itemId}/details`, {
+        method: 'GET', // GET 요청
+        credentials: 'include', // 쿠키를 함께 전송
+      });
       if (!response.ok) {
         throw new Error("Failed to fetch ayment details.");
       }
