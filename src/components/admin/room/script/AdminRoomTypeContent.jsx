@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import RoomTable from './comn/RoomTable';
 import Popup from './comn/Popup';
 import ToggleSwitch from './comn/ToggleSwitch';
+import "../css/AddAmenityForm.css";
+
 
 export default function AdminRoomTypeContent() {
     const [roomTypes, setRoomTypes] = useState([]); // DB에서 가져온 객실 데이터
     const [loading, setLoading] = useState(false); // 로딩 상태
     const [selectedRoom, setSelectedRoom] = useState(null); // 선택된 행 데이터
     const [amenities, setAmenities] = useState([]); // 선택된 객실의 어메니티 상태
+    const [isAddAmenityPopupOpen, setIsAddAmenityPopupOpen] = useState(false); //어메니티 추가 팝업
     const Ameheader = ["객실이름","어메니티","어메니티설명","활성화"];//팝업 어메니티 테이블
     const headers = ["#", "객실타입 ID", "객실이름", "객실설명", "최소인원", "최대인원", "기본가격"]; // 테이블 헤더
     const headerKeyMap = {
@@ -81,6 +84,10 @@ export default function AdminRoomTypeContent() {
         fetchRoomTypes();
     }, []);
 
+    useEffect(() => {
+        if(selectedRoom){}
+    }, [amenities,selectedRoom]);
+
     // 행 클릭 시 선택된 객실의 어메니티 로드
     const handleRowClick = (row) => {
         console.log("Selected row:", row);
@@ -92,10 +99,11 @@ export default function AdminRoomTypeContent() {
 
     useEffect(() => {
         console.log("selectedRoom 변경됨:", selectedRoom);
-    console.log(amenities);
+    
         
     }, [selectedRoom]
 );
+
 
    
     // 어메니티 상태 변경
@@ -132,7 +140,42 @@ const toggleAmenity = async (amenityName, currentState) => {
             return roomTypes.indexOf(row) + 1; // 인덱스 번호
         }
         const key = headerKeyMap[header];
+        if(key === "basePrice"){
+            return row[key] ? row[key].toLocaleString()+"원":"";
+        }
         return row[key] || ""; // 매핑된 키로 데이터 반환
+    };
+
+    //어메니티 추가 팝업 열기
+    const openAddAmenityPopup = () =>{
+        setIsAddAmenityPopupOpen(true);
+    };
+
+    const closeAddAmenityPopup = () =>{
+        setIsAddAmenityPopupOpen(false);
+    };
+
+    //어메니티 추가폼
+    const handleAddAmenitySubmit = async (e, amenityData) => {
+        e.preventDefault();
+         try {
+             const response = await fetch('http://localhost:8080/api/admin/rooms/addamenity', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                 },
+                body: JSON.stringify({ ...amenityData, roomTypeId: selectedRoom.roomTypeId}),
+             });
+
+        if (!response.ok) {
+              throw new Error('Failed to add amenity');
+        }
+        console.log('어메니티 추가 완료',response);
+        fetchAmenities(selectedRoom.name); // 어메니티 목록 갱신
+        closeAddAmenityPopup();
+        } catch (error) {
+            console.error('어메니티 추가 실패:', error);
+        }
     };
 
     return (
@@ -148,7 +191,7 @@ const toggleAmenity = async (amenityName, currentState) => {
                         renderCell={renderTableCell}
                         onRowClick={handleRowClick}
                     />
-                    {selectedRoom && amenities.length > 0 && (
+                    {selectedRoom && (
                         <Popup onClose={() => setSelectedRoom(null)}>
                             <h3>{selectedRoom.name} 어메니티</h3>
                             {amenities.length === 0 ? (
@@ -160,10 +203,47 @@ const toggleAmenity = async (amenityName, currentState) => {
                                 renderCell={renderAmenityTableCell}
                             />
                             )}
+                            <button onClick={openAddAmenityPopup} className="add-btn">어메니티 추가</button> {/* 수정됨: 어메니티 추가 버튼 추가 */}
                         </Popup>
                     )}
+                    {isAddAmenityPopupOpen && (
+                    <Popup onClose={closeAddAmenityPopup}>
+                        <div className='addAmenityBtn'><h3>어메니티 추가</h3></div>
+                       <AddAmenityForm onSubmit={handleAddAmenitySubmit} onClose={closeAddAmenityPopup}/>
+                   </Popup>)}
                 </>
             )}
         </div>
     );
 }
+const AddAmenityForm = ({ onSubmit,onClose }) => {
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+    const [isActive, setIsActive] = useState(true);
+  
+    const handleSubmit = (e) => {
+      onSubmit(e, {name, description, isActive});
+      onClose()
+    };
+  
+    return (
+      <form onSubmit={handleSubmit} className='addAmenity-form'>
+        <div className='addAmenity-form-group'>
+         <label>어메니티 이름:</label>
+          <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
+        </div>
+         <div className='addAmenity-form-group'>
+        <label>설명:</label>
+          <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} required />
+        </div>
+        <div className='addAmenity-form-group'>
+         <label>활성화:</label>
+        <select value={isActive} onChange={(e) => setIsActive(e.target.value === 'true')}>
+          <option value={true}>활성화</option>
+            <option value={false}>비활성화</option>
+        </select>
+      </div>
+        <button type="submit" className='add-btn'>추가</button>
+      </form>
+    );
+  };
