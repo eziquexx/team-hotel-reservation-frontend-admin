@@ -34,7 +34,7 @@ export default function AdminRoomContent() {
                 queryParams.append("resStatus", resStatus);
                 apiUrl = `?${queryParams}`;
             } else {
-                apiUrl = `/typeDetails?${queryParams}`;
+                apiUrl = `/roomdetails?${queryParams}`;
             }
 
             const response = await fetch(`http://localhost:8080/api/admin/rooms${apiUrl}`);
