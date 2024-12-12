@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import { createBrowserRouter, Navigate, redirect } from "react-router-dom";
 import AdminBoardsContent from "../components/admin/boards/script/AdminBoardsContent";
 import AdminMemberContent from "../components/admin/member/script/AdminMemberContent";
 import AdminPaymentsContent from "../components/admin/payments/script/AdminPaymentsContent";
@@ -40,16 +40,19 @@ export const RouterInfo = [
           const decodedToken = jwtDecode(token);
           // "ADMIN" 역할 및 토큰 만료 여부 확인
           if (decodedToken.role === "ADMIN" && Date.now() < decodedToken.exp * 1000) {
-            return null; // ADMIN 역할이고 토큰이 유효하면 정상 진행
+            return decodedToken.userId ? decodedToken.userId : decodedToken.staffUserId;
           } else {
-            throw new Error("Unauthorized"); // ADMIN 역할이 아니거나 토큰이 만료된 경우 에러 발생
+            // ADMIN 역할이 아니거나 토큰이 만료된 경우 리디렉션
+            return redirect("/admin/login");
           }
         } catch (error) {
           console.error("Error decoding token:", error);
-          throw new Error("Invalid token"); // 토큰 디코딩 오류 발생
+          // 토큰 디코딩 오류 발생 시 리디렉션
+          return redirect("/admin/login");
         }
       } else {
-        throw new Error("Unauthorized"); // 토큰이 없으면 에러 발생
+        // 토큰이 없으면 리디렉션
+        return redirect("/admin/login");
       }
     },
     children: [
