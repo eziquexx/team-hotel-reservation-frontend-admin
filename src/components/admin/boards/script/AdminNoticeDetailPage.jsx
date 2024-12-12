@@ -98,14 +98,13 @@ export default function AdminNoticeDetailPage() {
 
     // 수정 내용 DB에 저장 handler
     const handleSaveChanges = async () => {
-
+        // 수정된 내용 api 호출해서 db에 저장하기
     }
-
-
 
     return (
         <> 
             <div>
+                <h5 className="contentTitle">공지사항 상세</h5>
                 <Form className="detailFormWrap">
                     <Form.Group as={Row} className="mb-3" controlId="">
                         <Form.Label column sm={1}>게시판 ID</Form.Label>

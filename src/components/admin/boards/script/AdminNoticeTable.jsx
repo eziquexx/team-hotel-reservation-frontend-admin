@@ -42,10 +42,10 @@ export default function AdminNoticeTable({ data, loading }) {
       >
         <thead className="table-light">
           <tr>
-            <th style={{width:"100px"}}>공지사항ID</th>
-            <th style={{width:"580px"}}>제목</th>
+            <th style={{width:"80px"}}>ID</th>
+            <th style={{width:"560px"}}>제목</th>
             <th style={{width:"100px"}}>카테고리</th>
-            <th style={{width:"60px"}}>중요도</th>
+            <th style={{width:"70px"}}>중요도</th>
             <th style={{width:"90px"}}>조회수</th>
             <th style={{width:"170px"}}>생성일</th>
             <th style={{width:"170px"}}>수정일</th>

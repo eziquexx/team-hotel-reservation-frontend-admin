@@ -1,8 +1,6 @@
 /* AdminBoardsContent.css */
-/* 나중에 삭제 예정 */
-
-#AdminMainConatainer #AdminMainContentsWrap {
-  /* width: 1300px !important; */
+#adminBoardsContent {
+  width: 1200px;
 }
 #adminBoardsContent .table-height-fixed {
   height: 420px;
