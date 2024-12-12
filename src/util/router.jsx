@@ -10,12 +10,31 @@ import AdminPage from "../pages/AdminPage";
 import AdminHomeContent from "../components/admin/adminHome/script/AdminHomeContent";
 import AdminPaymentsList from "../components/admin/payments/script/AdminPaymentsList";
 import AdminPaymentsPaypalList from "../components/admin/payments/script/AdminPaymentsPaypalList";
+import PrivateRoute from "../components/common/PrivateRoute";
+import AdminLoginPage from "../pages/AdminLoginPage";
 
-//24.12.03 지은 [완료] : create-browser-router 적용
+const ErrorPage = () => {
+  return (
+      <div style={{ textAlign: "center", marginTop: "50px" }}>
+        <h1>404 - Page Not Found</h1>
+        <p>Sorry, the page you are looking for does not exist.</p>
+      </div>
+  );
+};
+
 export const RouterInfo = [
   {
+    path: "/admin/login",
+    element: <AdminLoginPage />,
+  },
+  {
     path: "/admin",
-    element: <AdminPage />,
+    element: (
+        <PrivateRoute>
+          <AdminPage />
+        </PrivateRoute>
+    ),
+    errorElement: <ErrorPage />, // 에러 페이지 추가
     children: [
       {
         index: true,
