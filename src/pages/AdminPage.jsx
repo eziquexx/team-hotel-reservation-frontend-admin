@@ -17,6 +17,7 @@ const AdminPage = () => {
         try {
             const response = await fetch("http://localhost:8080/api/admin/logout", {
                 method: "POST",
+                credentials: "include",
             });
 
             if (response.ok) {
@@ -35,9 +36,9 @@ const AdminPage = () => {
 
     return (
         <div style={AdminContainerStyle}>
-            <AdminHeader onLogout={handleLogout} />
-            <AdminContents />
+            <AdminHeader onLogout={handleLogout} /> {/* 로그아웃 핸들러 전달 */}
 
+            <Outlet />
         </div>
     );
 };
