@@ -95,6 +95,7 @@ export default function AdminPaymentTable({ data, loading }) {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: 'include', // 쿠키를 함께 전송
       });
 
       if (response.ok) {
@@ -136,6 +137,7 @@ export default function AdminPaymentTable({ data, loading }) {
         headers: {
           "Content-Type" : "application/json",
         },
+        credentials: 'include', // 쿠키를 함께 전송
       });
 
       if (!response.ok) {
