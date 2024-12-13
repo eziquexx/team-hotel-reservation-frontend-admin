@@ -37,7 +37,7 @@ const AdminPage = () => {
         <div style={AdminContainerStyle}>
             <AdminHeader onLogout={handleLogout} />
             <AdminContents />
-            <Outlet />
+
         </div>
     );
 };
