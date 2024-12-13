@@ -37,7 +37,7 @@ const AdminLoginPage = () => {
                 Cookies.set('JWT', token, { expires: 1, path: '/' }); // 1일 후 만료
 
                 // 관리자 여부 확인
-                if (data.roleName === "ADMIN") {
+                if (data.role === "ADMIN") {
                     // 로그인 성공 후 이전 경로로 리디렉션하거나, 기본 경로로 이동
                     const from = location.state?.from?.pathname || "/admin";
                     navigate(from, { replace: true });

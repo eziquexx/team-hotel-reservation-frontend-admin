@@ -37,8 +37,8 @@ const AdminPage = () => {
     return (
         <div style={AdminContainerStyle}>
             <AdminHeader onLogout={handleLogout} /> {/* 로그아웃 핸들러 전달 */}
+            <AdminContents />
 
-            <Outlet />
         </div>
     );
 };
