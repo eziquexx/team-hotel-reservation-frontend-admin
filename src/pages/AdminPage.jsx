@@ -13,22 +13,15 @@ const AdminPage = () => {
         height: "100vh",
     };
 
+    // useEffect 및 checkAuth 함수 제거
+
     const handleLogout = async () => {
         try {
-            const response = await fetch("http://localhost:8080/api/admin/logout", {
+            await fetch("http://localhost:8080/api/admin/logout", {
                 method: "POST",
                 credentials: "include",
             });
-
-            if (response.ok) {
-                // 서버에서 로그아웃 성공 시, 클라이언트 쿠키 삭제
-                Cookies.remove('JWT');
-                navigate("/admin/login");
-            } else {
-                // 서버에서 로그아웃 실패 시, 에러 처리
-                const errorData = await response.json();
-                console.error("Logout failed:", errorData.message || "Unknown error");
-            }
+            navigate("/admin/login"); // navigate 사용
         } catch (error) {
             console.error("Logout failed:", error);
         }

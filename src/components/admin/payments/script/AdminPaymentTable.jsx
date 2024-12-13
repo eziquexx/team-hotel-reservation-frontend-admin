@@ -3,7 +3,7 @@ import { Button, Modal, Spinner } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 
 // 24.12.06 지은 : 결제내역 테이블 fin. 상세내역 모달창 작업 fin.
-export default function AdminPaymentTable({ data, loading }) {  
+export default function AdminPaymentTable({ data, loading }) {
   const [items, setItems] = useState(data);
   const [showModal, setShowModal] = useState(false);
   const [smDeleteAlert, setSmDeleteAlert] = useState(false);
@@ -44,7 +44,10 @@ export default function AdminPaymentTable({ data, loading }) {
     setError(null);
 
     try {
-      const response = await fetch(`http://localhost:8080/api/admin/payments/${itemId}/details`);
+      const response = await fetch(`http://localhost:8080/api/admin/payments/${itemId}/details`, {
+        method: 'GET', // GET 요청
+        credentials: 'include', // 쿠키를 함께 전송
+      });
       if (!response.ok) {
         throw new Error("Failed to fetch ayment details.");
       }
@@ -93,19 +96,19 @@ export default function AdminPaymentTable({ data, loading }) {
           "Content-Type": "application/json",
         },
       });
-      
+
       if (response.ok) {
         const result = await response.text();
         console.log('Payment status updated successfully:', result);
-        
-        setItems((prevItems) => 
-          prevItems.map((item) => 
-            item.paymentId === paymentId ? 
+
+        setItems((prevItems) =>
+          prevItems.map((item) =>
+            item.paymentId === paymentId ?
             { ...item, paymentStatus: newStatus }
             : item
           )
         );
-        
+
         setSaveSuccess(result.message || "상태가 성공적으로 변경되었습니다.");
         setIsSaved(true);
       } else {
@@ -174,7 +177,7 @@ export default function AdminPaymentTable({ data, loading }) {
         </thead>
         <tbody className="table-group-divider">
           {items.map((item) => (
-            <tr 
+            <tr
               key={item.paymentId}
               onClick={() => handleRowClick(item.paymentId)}
               style={{ cursor: 'pointer' }}
@@ -195,11 +198,11 @@ export default function AdminPaymentTable({ data, loading }) {
       </Table>
 
       {/* row 모달 구현 */}
-      <Modal 
-        show={showModal} 
-        onHide={handleClose} 
+      <Modal
+        show={showModal}
+        onHide={handleClose}
         className="adminPaymentModal"
-        size="lg" 
+        size="lg"
         centered
         style={{zIndex:"1050"}}
       >
@@ -235,13 +238,13 @@ export default function AdminPaymentTable({ data, loading }) {
                   </p>
                   <p style={{display:"flex", alignItems:"center"}}>
                     <strong>결제상태:</strong>
-                    <span 
+                    <span
                       className="modal-item-text"
                       style={{width:"90px"}}
                     >
                         {itemStatus}</span>
-                    <select 
-                      className="form-select form-select-sm" 
+                    <select
+                      className="form-select form-select-sm"
                       aria-label="Default select example"
                       style={{width:"130px", marginLeft:"10px"}}
                       value={itemStatus}
@@ -275,20 +278,20 @@ export default function AdminPaymentTable({ data, loading }) {
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>취소</Button>
-            <Button 
+            <Button
               variant="primary"
               style={{display:"flex", alignItems:"center"}}
               onClick={statusSaveAlert}
             >
-              <span 
-                className="material-symbols-outlined" 
+              <span
+                className="material-symbols-outlined"
                 style={{fontSize:"16px", marginRight:"2px"}}
               >
                 check
               </span>
               저장
             </Button>
-            <Button 
+            <Button
               variant="danger"
               style={{display:"flex", alignItems:"center"}}
               onClick={rowDeleteAlert}
@@ -311,7 +314,7 @@ export default function AdminPaymentTable({ data, loading }) {
         centered
         style={{zIndex:"1055"}}
       >
-        <Modal.Body 
+        <Modal.Body
           className="text-center"
           style={{margin:"20px 0"}}
         >
@@ -337,7 +340,7 @@ export default function AdminPaymentTable({ data, loading }) {
               <Button variant="secondary" onClick={handleClose2}>
                 취소
               </Button>
-              <Button 
+              <Button
                 variant="primary"
                 style={{display:"flex", alignItems:"center"}}
                 onClick={() => updateStatus(selectedItem.paymentId, itemStatus)}
@@ -358,7 +361,7 @@ export default function AdminPaymentTable({ data, loading }) {
         centered
         style={{zIndex:"1055"}}
       >
-        <Modal.Body 
+        <Modal.Body
           className="text-center"
           style={{margin:"20px 0"}}
         >
@@ -384,7 +387,7 @@ export default function AdminPaymentTable({ data, loading }) {
               <Button variant="secondary" onClick={handleClose2}>
                 취소
               </Button>
-              <Button 
+              <Button
                 variant="danger"
                 style={{display:"flex", alignItems:"center"}}
                 onClick={rowRealDelete}
