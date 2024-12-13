@@ -12,7 +12,7 @@
     z-index: 1000; /* 다른 요소 위에 렌더링 */
   }
   
-  .modal-content {
+  .modal-room-content {
     background-color: #fff;
     padding: 20px;
     border-radius: 5px;
