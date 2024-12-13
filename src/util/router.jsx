@@ -12,6 +12,7 @@ import AdminPaymentsList from "../components/admin/payments/script/AdminPayments
 import AdminPaymentsPaypalList from "../components/admin/payments/script/AdminPaymentsPaypalList";
 import AdminNoticeDetailPage from "../components/admin/boards/script/AdminNoticeDetailPage";
 import AdminNoticeList from "../components/admin/boards/script/AdminNoticeList";
+import AdminRoomTypeContent from "../components/admin/room/script/AdminRoomTypeContent";
 import AdminLoginPage from "../pages/AdminLoginPage";
 import { jwtDecode } from 'jwt-decode';
 
@@ -81,6 +82,10 @@ export const RouterInfo = [
       {
         path: "room",
         element: <AdminRoomContent />,
+      },
+      {
+        path: "roomtype",
+        element:<AdminRoomTypeContent/>,
       },
       {
         path: "reservation",

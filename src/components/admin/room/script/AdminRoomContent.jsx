@@ -10,7 +10,7 @@ export default function AdminRoomContent() {
     const [resStatus, setStatus] = useState(""); // 객실 상태
     const [loading, setLoading] = useState(false); // 로딩 상태
     const statusOptions = ["PENDING", "CONFIRMED", "CANCELLED", "COMPLETED"];
-    const headers = ["#","예약ID","객실ID","객실타입","객실호수","층수","객실상태","객실전망","상태변경",""]
+    const headers = ["#","예약ID","객실ID","객실타입","객실호수","층수","객실전망","예약상태","객실상태","상태변경",""]
     const headerKeyMap = {
       "예약ID": "reservationId",
       "객실ID": "roomId",
@@ -18,7 +18,8 @@ export default function AdminRoomContent() {
       "객실호수": "roomNumber",
       "층수": "floor",
       "객실상태": "status",
-      "객실전망": "view"
+      "객실전망": "view",
+      "예약상태":"reservationStatus"
   };
   
     // API 요청
@@ -37,7 +38,10 @@ export default function AdminRoomContent() {
                 apiUrl = `/roomdetails?${queryParams}`;
             }
 
-            const response = await fetch(`http://localhost:8080/api/admin/rooms${apiUrl}`);
+            const response = await fetch(`http://localhost:8080/api/admin/rooms${apiUrl}`,{
+                method: 'GET', // GET 요청
+                credentials: 'include', // 쿠키를 함께 전송
+              });
             if (!response.ok) throw new Error("Failed to fetch rooms");
 
             const data = await response.json();
@@ -57,6 +61,7 @@ export default function AdminRoomContent() {
                 `http://localhost:8080/api/admin/rooms/details/${roomNumber}/${newStatus}`,
                 {
                     method: "PUT",
+                    credentials: 'include', // 쿠키를 함께 전송
                 }
             );
             if (response.ok) {
@@ -83,8 +88,8 @@ export default function AdminRoomContent() {
           <ToggleSwitch
           isChecked={row.status ==="AVAILABLE"}
           onToggle={(newState)=> handleRoomStatusToggle(row.roomNumber,newState)}
-          labelOn="사용가능"
-          labelOff="사용중"
+          labelOn="체크아웃"
+          labelOff="체크인"
           />
         );
       }
