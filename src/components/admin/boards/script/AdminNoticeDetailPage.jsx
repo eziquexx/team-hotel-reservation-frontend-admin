@@ -20,7 +20,10 @@ export default function AdminNoticeDetailPage() {
     useEffect(() => {
         const fetchNotice = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/api/admin/notices/${noticeId}`);
+                const response = await fetch(`http://localhost:8080/api/admin/notices/${noticeId}`,{
+                    method: 'GET', // GET 요청
+                    credentials: 'include', // 쿠키를 함께 전송
+                  });
                 const data = await response.json();
                 setData(data); // fetch문으로 가져온 데이터 저장
                 setOriginalData(data); // 원본으로도 저장하기

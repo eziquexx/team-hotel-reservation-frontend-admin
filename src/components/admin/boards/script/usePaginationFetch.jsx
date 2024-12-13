@@ -18,7 +18,10 @@ export default function usePaginationFetch(urlTest) {
       setLoading(true);
       try {
         const response = await fetch(
-          `${fetchUrl}`
+          `${fetchUrl}`,{
+            method: 'GET', // GET 요청
+            credentials: 'include', // 쿠키를 함께 전송
+          }
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");

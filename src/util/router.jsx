@@ -10,6 +10,8 @@ import AdminPage from "../pages/AdminPage";
 import AdminHomeContent from "../components/admin/adminHome/script/AdminHomeContent";
 import AdminPaymentsList from "../components/admin/payments/script/AdminPaymentsList";
 import AdminPaymentsPaypalList from "../components/admin/payments/script/AdminPaymentsPaypalList";
+import AdminNoticeDetailPage from "../components/admin/boards/script/AdminNoticeDetailPage";
+import AdminNoticeList from "../components/admin/boards/script/AdminNoticeList";
 import AdminLoginPage from "../pages/AdminLoginPage";
 import { jwtDecode } from 'jwt-decode';
 
@@ -101,6 +103,16 @@ export const RouterInfo = [
       {
         path: "boards",
         element: <AdminBoardsContent />,
+        children: [
+          {
+            path: "",
+            element: <AdminNoticeList />
+          },
+          {
+            path: ":noticeId",
+            element: <AdminNoticeDetailPage />
+          }
+        ]
       },
       {
         path: "statistics",
