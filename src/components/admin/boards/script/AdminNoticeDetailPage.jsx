@@ -7,13 +7,14 @@ export default function AdminNoticeDetailPage() {
     const navigate = useNavigate();
     const { noticeId } = useParams();
     const [ originalData, setOriginalData ] = useState(null); // 원본 데이터 저장
-    const [ data, setData ] = useState(null); // 수정 데이터 저장
+    const [ modifiedData, setModifiedData ] = useState(null); // 수정 데이터 저장
     const [ selectedImportant, setSelectedImportant ] = useState('');
     const [ selectedCategory, setSelectedCategory ] = useState('');
     const [ loading, setLoading ] = useState(true);
     const [ error, setError ] = useState(null);
     const [ showModal, setShowModal ] = useState(false);
     const [ showSaveModal, setShowSaveModal ] = useState(false);
+    const [ isModified, setIsModified ] = useState(false); // 수정 변경사항 여부 체크
     // const handleClose = () => setShow(false);
     // const handleShow = () => setShow(true);
     
@@ -22,8 +23,8 @@ export default function AdminNoticeDetailPage() {
             try {
                 const response = await fetch(`http://localhost:8080/api/admin/notices/${noticeId}`);
                 const data = await response.json();
-                setData(data); // fetch문으로 가져온 데이터 저장
                 setOriginalData(data); // 원본으로도 저장하기
+                setModifiedData(data); // 수정 가능한 데이터 저장하기
                 setSelectedImportant(data.isImportant ? '1' : '0');
                 setSelectedCategory(data.category);
                 // setSelectedValue(data.importance.toString()); // 중요도 설정 (API에 따라 필드명 수정 필요)
@@ -40,7 +41,7 @@ export default function AdminNoticeDetailPage() {
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
-    if (!data) return <div>No data</div>
+    if (!originalData) return <div>No data</div>
 
     // 날짜
     const formatDate = (dateString) => {
@@ -49,25 +50,75 @@ export default function AdminNoticeDetailPage() {
         return formattedDate;
     }
 
-    // input 변경 핸들러
+    // input 변경 핸들러    
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setData({ ...data, [name]: value });
+    
+        // setModifiedData 호출
+        setModifiedData((prevState) => {
+            const updatedPost = { ...prevState, [name]: value };
+    
+            // 수정 내용 원본과 동일한지 비교
+            const isContentModified = 
+                updatedPost.category !== originalData.category || 
+                updatedPost.important !== originalData.important || 
+                updatedPost.title !== originalData.title ||
+                updatedPost.content !== originalData.content;
+            
+            // 수정 여부 바로 상태 업데이트
+            setIsModified(isContentModified);
+    
+            console.log("isContentModified: ", isContentModified); // boolean값 테스트 출력
+            
+            return updatedPost; // 새로운 데이터를 리턴하여 상태 갱신
+        });
     };
 
     // 중요도 변경 handler
     const handleImportanceChange = (e) => {
-        setSelectedImportant(e.target.value);
-        setData({ ...data, isImportant: e.target.value === '1' }); 
+        const { value } = e.target;
+
+        // 중요도 값 업데이트
+        setSelectedImportant(value);
+
+        // modifiedData 업데이트
+        setModifiedData((prevState) => {
+            const updatedPost = { ...prevState, important: value === '1'};
+
+            // 수정 여부 확인
+            const isContentModified = 
+                updatedPost.category !== originalData.category || 
+                updatedPost.important !== originalData.important || 
+                updatedPost.title !== originalData.title ||
+                updatedPost.content !== originalData.content;
+
+            setIsModified(isContentModified);
+
+            console.log("isContentModified: ", isContentModified); // boolean값 테스트 출력
+
+            return updatedPost; // 수정사항 업데이트
+        })
     };
 
     // 카테고리 변경 handler
     const handleCategoryChange = (e) => {
         setSelectedCategory(e.target.value);
-        setData({ ...data, category: e.target.value });
+        setModifiedData({ ...modifiedData, category: e.target.value });
     }
 
-    console.log(data);
+
+
+    // 수정 여부 체크 함수
+    const checkModifiedData = () => {
+        const isContentModified =
+            modifiedData.category !== originalData.category ||
+            modifiedData.important !== originalData.important ||
+            modifiedData.title !== originalData.title ||
+            modifiedData.content !== originalData.content;
+
+        setIsModified(isContentModified); // 수정 여부 상태 업데이트
+    };
+
 
     // 모달창 닫기
     const handleCloseModal = () => {
@@ -79,17 +130,19 @@ export default function AdminNoticeDetailPage() {
     // 뒤로가기 modal
     const handleMoveBack = () => {
         // 수정 여부 확인
-        if (JSON.stringify(data) !== JSON.stringify(originalData)) {
+        if (JSON.stringify(modifiedData) !== JSON.stringify(originalData)) {
             setShowModal(true);
         } else {
             navigate(-1);
         }
     };
 
+    // 뒤로가기 버튼 클릭시 이전 페이지로 이동
     const handleConfirmMoveBack = () => {
         setShowModal(false);
         navigate(-1);
     };
+
 
     // 수정 모달
     const handleEditModal = () => {
@@ -109,12 +162,12 @@ export default function AdminNoticeDetailPage() {
                     <Form.Group as={Row} className="mb-3" controlId="">
                         <Form.Label column sm={1}>게시판 ID</Form.Label>
                         <Col sm={2}>
-                            <Form.Control plaintext readOnly defaultValue={data.noticeId} />
+                            <Form.Control plaintext readOnly defaultValue={modifiedData.noticeId} />
                         </Col>
                         <Form.Label column sm={1}>중요도</Form.Label>
                         <Col sm={2}>
                             <Form.Select 
-                                aria-label="Default select example" 
+                                name="important"
                                 value={selectedImportant}
                                 onChange={handleImportanceChange}
                             >
@@ -129,6 +182,7 @@ export default function AdminNoticeDetailPage() {
                         <Form.Label column sm={1}>카테고리</Form.Label>
                         <Col sm={2}>
                             <Form.Select 
+                                name="category"
                                 value={selectedCategory}
                                 onChange={handleCategoryChange}
                             >
@@ -140,18 +194,18 @@ export default function AdminNoticeDetailPage() {
                         </Col>
                         <Form.Label column sm={1}>조회수</Form.Label>
                         <Col sm={2}>
-                            <Form.Control plaintext readOnly defaultValue={data.views} />
+                            <Form.Control plaintext readOnly defaultValue={modifiedData.views} />
                         </Col>
                     </Form.Group>
 
                     <Form.Group as={Row} className="mb-3" controlId="">
                         <Form.Label column sm={1}>작성일</Form.Label>
                         <Col sm={2}>
-                            <Form.Control plaintext readOnly defaultValue={formatDate(data.createdAt)} />
+                            <Form.Control plaintext readOnly defaultValue={formatDate(modifiedData.createdAt)} />
                         </Col>
                         <Form.Label column sm={1}>수정일</Form.Label>
                         <Col sm={2}>
-                            <Form.Control plaintext readOnly defaultValue={formatDate(data.updatedAt)} />
+                            <Form.Control plaintext readOnly defaultValue={formatDate(modifiedData.updatedAt)} />
                         </Col>
                     </Form.Group>
     
@@ -160,7 +214,8 @@ export default function AdminNoticeDetailPage() {
                         <Col sm={6}>
                             <Form.Control 
                                 type="text" 
-                                value={data.title} 
+                                name="title"
+                                value={modifiedData.title} 
                                 onChange={handleInputChange}
                             />
                         </Col>
@@ -171,7 +226,8 @@ export default function AdminNoticeDetailPage() {
                         <Col sm={6}>
                             <Form.Control 
                                 as="textarea" 
-                                value={data.content} 
+                                name="content"
+                                value={modifiedData.content} 
                                 onChange={handleInputChange}
                                 style={{resize: "none", }}
                                 rows= "14"
@@ -188,8 +244,8 @@ export default function AdminNoticeDetailPage() {
                         </Button>
                         <Button 
                             variant="primary" 
+                            disabled={!isModified}
                             onClick={handleEditModal} 
-                            // disabled={isEditButtonDisabled}
                         >
                             수정
                         </Button>
