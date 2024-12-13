@@ -7,7 +7,7 @@ export default function AdminMain() {
     <div id="AdminMainConatainer">
       <div id="AdminMainContentsContainer">
         <div id="AdminMainContentsWrap">
-          <Outlet />
+
         </div>
       </div>
     </div>
