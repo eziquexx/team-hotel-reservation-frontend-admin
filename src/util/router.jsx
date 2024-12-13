@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import { createBrowserRouter, Navigate, redirect } from "react-router-dom";
 import AdminBoardsContent from "../components/admin/boards/script/AdminBoardsContent";
 import AdminMemberContent from "../components/admin/member/script/AdminMemberContent";
 import AdminPaymentsContent from "../components/admin/payments/script/AdminPaymentsContent";
@@ -11,6 +11,7 @@ import AdminHomeContent from "../components/admin/adminHome/script/AdminHomeCont
 import AdminPaymentsList from "../components/admin/payments/script/AdminPaymentsList";
 import AdminPaymentsPaypalList from "../components/admin/payments/script/AdminPaymentsPaypalList";
 import AdminLoginPage from "../pages/AdminLoginPage";
+import { jwtDecode } from 'jwt-decode';
 
 import PrivateRoute from "../components/common/PrivateRoute";
 
