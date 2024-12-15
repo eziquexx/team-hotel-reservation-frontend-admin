@@ -198,11 +198,11 @@ export default function AdminNoticeDetailPage() {
                 <Form className="detailFormWrap">
                     <Form.Group as={Row} className="mb-3" controlId="">
                         <Form.Label column sm={1}>게시판 ID</Form.Label>
-                        <Col sm={2}>
+                        <Col sm={3}>
                             <Form.Control plaintext readOnly defaultValue={data.noticeId} />
                         </Col>
                         <Form.Label column sm={1}>중요도</Form.Label>
-                        <Col sm={2}>
+                        <Col sm={3}>
                             <Form.Select 
                                 aria-label="Default select example" 
                                 value={selectedImportant}
@@ -217,7 +217,7 @@ export default function AdminNoticeDetailPage() {
                     
                     <Form.Group as={Row} className="mb-3" controlId="">
                         <Form.Label column sm={1}>카테고리</Form.Label>
-                        <Col sm={2}>
+                        <Col sm={3}>
                             <Form.Select 
                                 value={selectedCategory}
                                 onChange={handleCategoryChange}
@@ -229,25 +229,25 @@ export default function AdminNoticeDetailPage() {
                             </Form.Select>
                         </Col>
                         <Form.Label column sm={1}>조회수</Form.Label>
-                        <Col sm={2}>
+                        <Col sm={3}>
                             <Form.Control plaintext readOnly defaultValue={data.views} />
                         </Col>
                     </Form.Group>
 
                     <Form.Group as={Row} className="mb-3" controlId="">
                         <Form.Label column sm={1}>작성일</Form.Label>
-                        <Col sm={2}>
+                        <Col sm={3}>
                             <Form.Control plaintext readOnly defaultValue={formatDate(data.createdAt)} />
                         </Col>
                         <Form.Label column sm={1}>수정일</Form.Label>
-                        <Col sm={2}>
+                        <Col sm={3}>
                             <Form.Control plaintext readOnly defaultValue={formatDate(data.updatedAt)} />
                         </Col>
                     </Form.Group>
     
                     <Form.Group as={Row} className="mb-3" controlId="">
                         <Form.Label column sm={1}>제목</Form.Label>
-                        <Col sm={6}>
+                        <Col sm={11}>
                             <Form.Control 
                                 type="text" 
                                 name="title"
@@ -259,7 +259,7 @@ export default function AdminNoticeDetailPage() {
 
                     <Form.Group as={Row} className="mb-3" controlId="">
                         <Form.Label column sm={1}>내용</Form.Label>
-                        <Col sm={6}>
+                        <Col sm={11}>
                             <Form.Control 
                                 as="textarea" 
                                 name="content"
@@ -271,7 +271,7 @@ export default function AdminNoticeDetailPage() {
                         </Col>
                     </Form.Group>
 
-                    <div>
+                    <div className="btnGroup">
                         <Button 
                             variant="secondary" 
                             onClick={handleMoveBack}
