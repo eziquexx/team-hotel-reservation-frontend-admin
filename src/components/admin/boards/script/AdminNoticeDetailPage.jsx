@@ -4,6 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import AdminNoticeMoveBackModal from "./AdminNoticeMoveBackModal";
 import AdminNoticeEditModal from "./AdminNoticeEditModal";
 import AdminNoticeEditSuccessModal from "./AdminNoticeEditSuccessModal";
+import AdminNoticeDeleteModal from "./AdminNoticeDeleteModal";
+import AdminNoticeDeleteSuccessModal from "./AdminNoticeDeleteSuccessModal";
 
 export default function AdminNoticeDetailPage() {
     const navigate = useNavigate();
@@ -19,6 +21,9 @@ export default function AdminNoticeDetailPage() {
     const [ isEditButtonDisabled, setIsEditButtonDisabled] = useState("disabled");
     const [ showSaveCompletedModal, setShowSaveCompletedModal ] = useState(false);
     const [ saveSuccess, setSaveSuccess ] = useState(false);
+    const [ showDeleteModal, setShowDeleteModal ] = useState(false);
+    const [ deleteSuccess, setDeleteSuccess ] = useState(false);
+    const [ showDeleteCompletedModal, setShowDeleteCompletedModal ] = useState(false);
 
     // 해당 게시글 상세내용 api 호출 함수
     const fetchNotice = async () => {
@@ -128,6 +133,8 @@ export default function AdminNoticeDetailPage() {
         setShowModal(false);
         setShowSaveModal(false);
         setShowSaveCompletedModal(false);
+        setShowDeleteModal(false);
+        setShowDeleteCompletedModal(false);
     };
 
     // 뒤로가기 modal
@@ -149,6 +156,39 @@ export default function AdminNoticeDetailPage() {
     // 수정 모달 오픈.
     const handleEditModal = () => {
         setShowSaveModal(true);
+    }
+
+    // 삭제 모달 오픈
+    const handleDeleteModal = () => {
+        setShowDeleteModal(true);
+    }
+
+    // 삭제 api
+    const handleDeleteChanges = async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/api/admin/notices/${noticeId}`, {
+                method: "DELETE",
+            })
+            console.log(response.status);
+            if (response.status === 200) {
+                const result = await response.text();
+                console.log(result);
+                setDeleteSuccess(true);
+            } else {
+                console.error("삭제 실패", response.status);
+                setDeleteSuccess(false);
+            }
+        } catch(error) {
+            console.error("에러 발생", error);
+            setDeleteSuccess(false);
+        } finally {
+            setShowDeleteCompletedModal(true);
+        }
+    }
+
+    // 삭제 성공 모달에서 닫기 버튼 클릭시 뒤로 이동
+    const handleDeleteBackMove = () => {
+        navigate(-1);
     }
     
     return (
@@ -245,7 +285,12 @@ export default function AdminNoticeDetailPage() {
                         >
                             수정
                         </Button>
-                        <Button variant="danger">삭제</Button>
+                        <Button 
+                            variant="danger"
+                            onClick={handleDeleteModal}
+                        >
+                            삭제
+                        </Button>
                     </div>
                 </Form>
             </div>
@@ -270,6 +315,22 @@ export default function AdminNoticeDetailPage() {
                 handleCloseModal={handleCloseModal}
                 saveSuccess={saveSuccess}
             />
+
+            {/* 삭제 확인 모달 */}
+            <AdminNoticeDeleteModal 
+                showDeleteModal={showDeleteModal}
+                handleCloseModal={handleCloseModal}
+                handleDeleteChanges={handleDeleteChanges}
+            />
+
+            {/* 삭제 완료 모달 */}
+            <AdminNoticeDeleteSuccessModal 
+                showDeleteCompletedModal={showDeleteCompletedModal}
+                handleCloseModal={handleCloseModal}
+                deleteSuccess={deleteSuccess}
+                handleDeleteBackMove={handleDeleteBackMove}
+            />
+            
         </>
     );
 }
