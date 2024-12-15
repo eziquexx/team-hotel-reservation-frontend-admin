@@ -14,8 +14,7 @@ export default function AdminNoticeDetailPage() {
     const [ error, setError ] = useState(null);
     const [ showModal, setShowModal ] = useState(false);
     const [ showSaveModal, setShowSaveModal ] = useState(false);
-    // const handleClose = () => setShow(false);
-    // const handleShow = () => setShow(true);
+    const [ isEditButtonDisabled, setIsEditButtonDisabled] = useState("disabled");
     
     useEffect(() => {
         const fetchNotice = async () => {
@@ -37,6 +36,22 @@ export default function AdminNoticeDetailPage() {
 
         fetchNotice();
     }, [noticeId]);
+
+    // data와 originalData가 둘 다 준비되었을 때만 실행되도록 조건 처리
+    useEffect(() => {
+        if (data && originalData) {
+            if (
+                originalData.category !== data.category ||
+                originalData.isImportant !== data.isImportant ||
+                originalData.title !== data.title ||
+                originalData.content !== data.content
+            ) {
+                setIsEditButtonDisabled("");
+            } else {
+                setIsEditButtonDisabled("disabled");
+            }
+        }
+    }, [data, originalData]); // data나 originalData가 변경될 때마다 실행
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
@@ -67,14 +82,13 @@ export default function AdminNoticeDetailPage() {
         setData({ ...data, category: e.target.value });
     }
 
-    console.log(data);
+    // console.log(data);
 
     // 모달창 닫기
     const handleCloseModal = () => {
         setShowModal(false);
         setShowSaveModal(false);
     };
-
 
     // 뒤로가기 modal
     const handleMoveBack = () => {
@@ -86,12 +100,18 @@ export default function AdminNoticeDetailPage() {
         }
     };
 
+    // 뒤로가기 확인 모달에서 뒤로가기 클릭시 이동    
     const handleConfirmMoveBack = () => {
         setShowModal(false);
         navigate(-1);
     };
 
-    // 수정 모달
+    // 수정 버튼 활성화/비활성화
+    const handleEditButtonActive = () => {
+        
+    }
+
+    // 수정 모달 오픈.
     const handleEditModal = () => {
         setShowSaveModal(true);
     }
@@ -160,6 +180,7 @@ export default function AdminNoticeDetailPage() {
                         <Col sm={6}>
                             <Form.Control 
                                 type="text" 
+                                name="title"
                                 value={data.title} 
                                 onChange={handleInputChange}
                             />
@@ -171,9 +192,10 @@ export default function AdminNoticeDetailPage() {
                         <Col sm={6}>
                             <Form.Control 
                                 as="textarea" 
+                                name="content"
                                 value={data.content} 
                                 onChange={handleInputChange}
-                                style={{resize: "none", }}
+                                style={{resize: "none"}}
                                 rows= "14"
                             />
                         </Col>
@@ -189,7 +211,7 @@ export default function AdminNoticeDetailPage() {
                         <Button 
                             variant="primary" 
                             onClick={handleEditModal} 
-                            // disabled={isEditButtonDisabled}
+                            disabled={isEditButtonDisabled}
                         >
                             수정
                         </Button>
