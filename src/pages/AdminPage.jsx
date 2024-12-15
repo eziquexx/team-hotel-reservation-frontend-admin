@@ -1,45 +1,42 @@
-import React from "react";
-import { Outlet, useNavigate } from "react-router-dom";
-import AdminHeader from "../components/common/AdminHeader";
-import AdminContents from "../components/common/AdminContents";
-import Cookies from 'js-cookie';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AdminPage = () => {
+    const [authorized, setAuthorized] = useState(false);
     const navigate = useNavigate();
 
-    const AdminContainerStyle = {
-        display: "flex",
-        flexDirection: "column",
-        height: "100vh",
-    };
+    useEffect(() => {
+        const checkAdminAccess = async () => {
+            try {
+                const response = await fetch("http://localhost:8080/api/admin/me", {
+                    method: "GET",
+                    credentials: "include", // HttpOnly 쿠키 포함
+                });
 
-    const handleLogout = async () => {
-        try {
-            const response = await fetch("http://localhost:8080/api/admin/logout", {
-                method: "POST",
-            });
-
-            if (response.ok) {
-                // 서버에서 로그아웃 성공 시, 클라이언트 쿠키 삭제
-                Cookies.remove('JWT');
-                navigate("/admin/login");
-            } else {
-                // 서버에서 로그아웃 실패 시, 에러 처리
-                const errorData = await response.json();
-                console.error("Logout failed:", errorData.message || "Unknown error");
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.role === "ADMIN") {
+                        setAuthorized(true); // 권한 확인 성공
+                    } else {
+                        throw new Error("Unauthorized access");
+                    }
+                } else {
+                    throw new Error("Unauthorized access");
+                }
+            } catch (err) {
+                console.error(err.message);
+                navigate("/"); // 로그인 페이지로 리디렉션
             }
-        } catch (error) {
-            console.error("Logout failed:", error);
-        }
-    };
+        };
 
-    return (
-        <div style={AdminContainerStyle}>
-            <AdminHeader onLogout={handleLogout} />
-            <AdminContents />
+        checkAdminAccess();
+    }, [navigate]);
 
-        </div>
-    );
+    if (!authorized) {
+        return <div>Loading...</div>;
+    }
+
+    return <div>관리자 페이지에 접속하였습니다.</div>;
 };
 
 export default AdminPage;
