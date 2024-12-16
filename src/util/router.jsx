@@ -10,6 +10,7 @@ import AdminPage from "../pages/AdminPage";
 import AdminHomeContent from "../components/admin/adminHome/script/AdminHomeContent";
 import AdminPaymentsList from "../components/admin/payments/script/AdminPaymentsList";
 import AdminPaymentsPaypalList from "../components/admin/payments/script/AdminPaymentsPaypalList";
+import PrivateRoute from "../components/common/PrivateRoute";
 import AdminNoticeDetailPage from "../components/admin/boards/script/AdminNoticeDetailPage";
 import AdminNoticeList from "../components/admin/boards/script/AdminNoticeList";
 import AdminRoomTypeContent from "../components/admin/room/script/AdminRoomTypeContent";
