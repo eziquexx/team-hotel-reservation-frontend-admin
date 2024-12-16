@@ -10,6 +10,7 @@ import AdminPage from "../pages/AdminPage";
 import AdminHomeContent from "../components/admin/adminHome/script/AdminHomeContent";
 import AdminNoticeDetailPage from "../components/admin/boards/script/AdminNoticeDetailPage";
 import AdminNoticeList from "../components/admin/boards/script/AdminNoticeList";
+import AdminNoticeCreatePage from "../components/admin/boards/script/AdminNoticeCreatePage";
 
 //24.12.03 지은 [완료] : create-browser-router 적용
 export const RouterInfo = [
@@ -52,6 +53,10 @@ export const RouterInfo = [
           {
             path: ":noticeId",
             element: <AdminNoticeDetailPage />
+          },
+          {
+            path: "create",
+            element: <AdminNoticeCreatePage />
           }
         ]
       },
