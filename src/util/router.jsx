@@ -1,7 +1,7 @@
 import { createBrowserRouter, Navigate, redirect } from "react-router-dom";
 import AdminBoardsContent from "../components/admin/boards/script/AdminBoardsContent";
 import AdminMemberContent from "../components/admin/member/script/AdminMemberContent";
-// import AdminPaymentsContent from "../components/admin/payments/script/AdminPaymentsContent";
+import AdminPaymentsContent from "../components/admin/payments/script/AdminPaymentsContent";
 import AdminReservationContent from "../components/admin/reservation/script/AdminReservationContent";
 import AdminRoomContent from "../components/admin/room/script/AdminRoomContent";
 import AdminStaffContent from "../components/admin/staff/script/AdminStaffContent";
@@ -31,7 +31,6 @@ export const RouterInfo = [
     path: "/admin",
     element: <AdminPage />,
     errorElement: <ErrorPage />,
-
     children: [
       {
         index: true,
@@ -53,20 +52,20 @@ export const RouterInfo = [
         path: "reservation",
         element: <AdminReservationContent />,
       },
-      // {
-        // path: "payments",
-        // element: <AdminPaymentsContent />,
-        // children: [
-        //   {
-        //     path:"",
-        //     element: <AdminPaymentsList />,
-        //   },
-        //   {
-        //     path:"paypal",
-        //     element: <AdminPaymentsPaypalList />,
-        //   }
-        // ]
-      // },
+      {
+        path: "payments",
+        element: <AdminPaymentsContent />,
+        children: [
+          {
+            path:"",
+            element: <AdminPaymentsList />,
+          },
+          {
+            path:"paypal",
+            element: <AdminPaymentsPaypalList />,
+          }
+        ]
+      },
       {
         path: "boards",
         element: <AdminBoardsContent />,
