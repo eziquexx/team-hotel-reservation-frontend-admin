@@ -28,7 +28,10 @@ export default function AdminNoticeDetailPage() {
     // 해당 게시글 상세내용 api 호출 함수
     const fetchNotice = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api/admin/notices/${noticeId}`);
+            const response = await fetch(`http://localhost:8080/api/admin/notices/${noticeId}`,{
+                method: 'GET', // GET 요청
+                credentials: 'include', // 쿠키를 함께 전송
+              });
             const data = await response.json();
             setData(data); // fetch문으로 가져온 데이터 저장
             setOriginalData(data); // 원본으로도 저장하기
@@ -78,6 +81,7 @@ export default function AdminNoticeDetailPage() {
                     category: data.category,
                     isImportant: data.isImportant,
                 }),
+                credentials: 'include',
             });
             console.log(response.status);
             if (response.status === 200) {
@@ -168,6 +172,7 @@ export default function AdminNoticeDetailPage() {
         try {
             const response = await fetch(`http://localhost:8080/api/admin/notices/${noticeId}`, {
                 method: "DELETE",
+                credentials: 'include',
             })
             console.log(response.status);
             if (response.status === 200) {
