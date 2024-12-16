@@ -25,3 +25,10 @@
   padding: 20px;
   border: 1px solid #ddd;
 }
+#adminBoardsContent .btnGroup {
+  display: flex;
+  justify-content: center;
+}
+#adminBoardsContent .btn:not(:last-child) {
+  margin-right: 10px;
+}

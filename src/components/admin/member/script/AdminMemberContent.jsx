@@ -32,9 +32,9 @@ export default function AdminMemberContent() {
 
     return (
         <div>
-            <h1>회원관리</h1>
+
             <div>
-                <h2>회원 목록</h2>
+
                 <table>
                     <thead>
                     <tr>
@@ -48,7 +48,7 @@ export default function AdminMemberContent() {
                     <tbody>
                     {members.map((member) => (
                         <tr key={member.memberId}>
-                            <td>{member.memberId}</td>
+                            <td>{member.user_id}</td>
                             <td>{member.name}</td>
                             <td>{member.email}</td>
                             <td>{member.phone}</td>

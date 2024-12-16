@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import Cookies from 'js-cookie';
+import { useNavigate } from "react-router-dom";
 import "../components/common/css/AdminLoginPage.css";
 
 const AdminLoginPage = () => {
@@ -8,7 +7,6 @@ const AdminLoginPage = () => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
-    const location = useLocation();
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -18,39 +16,38 @@ const AdminLoginPage = () => {
             const response = await fetch("http://localhost:8080/api/admin/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
+                credentials: "include", // 쿠키를 요청에 포함
                 body: JSON.stringify({ staffUserId, password }),
             });
 
             if (response.ok) {
-                const data = await response.json();
+                const contentType = response.headers.get("Content-Type");
+                let data;
 
-                // 응답에서 토큰 추출
-                const token = data.token;
-
-                // 토큰이 있는지 확인
-                if (!token) {
-                    setError("Token not found in response.");
-                    return;
+                // 응답 타입에 따라 처리
+                if (contentType && contentType.includes("application/json")) {
+                    data = await response.json();
+                } else {
+                    data = { message: await response.text() };
                 }
 
-                // 토큰을 쿠키에 저장 (만료 시간 설정)
-                Cookies.set('JWT', token, { expires: 1, path: '/' }); // 1일 후 만료
+                console.log("Response Data:", data); // 디버깅용
 
                 // 관리자 여부 확인
-                if (data.roleName === "ADMIN") { // data.roleName 사용
-                    // 로그인 성공 후 이전 경로로 리디렉션하거나, 기본 경로로 이동
-                    const from = location.state?.from?.pathname || "/admin";
-                    navigate(from, { replace: true });
+                if (data.role && data.role === "ADMIN") {
+                    // 관리자 권한 확인 성공
+                    console.log("Login successful:", data);
+                    navigate("/admin", { replace: true });
                 } else {
                     setError("You are not authorized to access this page.");
                 }
             } else {
-                const errorData = await response.json();
-                setError(errorData.message || "Invalid credentials.");
+                const errorData = await response.text();
+                setError(errorData || "Invalid credentials.");
             }
         } catch (err) {
             setError("An error occurred. Please try again.");
-            console.error(err);
+            console.error("Error:", err);
         }
     };
 
