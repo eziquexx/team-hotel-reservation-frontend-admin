@@ -27,7 +27,7 @@ export default function AdminHeader() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/admin/me", {
+        const response = await fetch("http://localhost:8080/api/admin/protected", {
           credentials: "include", // 세션 정보를 포함
         });
         if (response.ok) {
