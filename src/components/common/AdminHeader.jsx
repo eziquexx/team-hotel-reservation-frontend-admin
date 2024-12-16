@@ -1,19 +1,15 @@
+import { useState, useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Button from "react-bootstrap/Button";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ButtonEx from "./ButtonEx";
 import "./css/AdminHeader.css";
-import useUserInfo from "../../util/useUserInfo";
 
 //24.11.25 지은 [완료] : AdminHeader 링크 테스트
 export default function AdminHeader() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const isLoggedIn = location.pathname !== '/admin/login';
-  const { userInfo, loading, error } = useUserInfo(isLoggedIn);
-  // const [staffUserId, setStaffUserId] = useState(""); // 관리자 아이디 상태
+  const [staffUserId, setStaffUserId] = useState(""); // 관리자 아이디 상태
 
   const handleLogout = async () => {
     try {
@@ -21,34 +17,32 @@ export default function AdminHeader() {
         method: "POST",
         credentials: "include",
       });
-      navigate("/admin/login");
-      // window.location.href = "/admin/login"; // 로그아웃 후 로그인 페이지로 이동
+      window.location.href = "/admin/login"; // 로그아웃 후 로그인 페이지로 이동
     } catch (error) {
       console.error("Logout failed:", error); // 에러 로그 출력
     }
   };
 
   // 관리자 아이디 가져오기
-  // useEffect(() => {
-  //   const fetchProfile = async () => {
-  //     try {
-  //       const response = await fetch("http://localhost:8080/api/admin/login", {
-  //         credentials: "include", // 세션 정보를 포함
-  //       });
-  //       if (response.ok) {
-  //         const data = await response.json();
-  //         console.log("data값", data);
-  //         setStaffUserId(data.staffUserId); // staffUserId 업데이트
-  //       } else {
-  //         console.error("Failed to fetch profile");
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching profile:", error);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/api/admin/me", {
+          credentials: "include", // 세션 정보를 포함
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setStaffUserId(data.staffUserId); // staffUserId 업데이트
+        } else {
+          console.error("Failed to fetch profile");
+        }
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+      }
+    };
 
-  //   fetchProfile();
-  // }, []);
+    fetchProfile();
+  }, []);
 
   return (
     <div id="adminHeaderContainer">
@@ -68,14 +62,7 @@ export default function AdminHeader() {
               <span className="material-symbols-outlined">home</span>
             </Link>
           </Nav>
-          <Navbar.Text>
-            {loading && <span style={{ color: 'gray' }}>Loading user info...</span>}
-            {error && <span style={{ color: 'red' }}>Error: {error}</span>}
-            {!loading && !error && userInfo && (
-                <span>{userInfo.name}님 환영합니다.</span>
-            )}
-          </Navbar.Text>
-          {/* <Navbar.Text>{staffUserId}님 환영합니다.</Navbar.Text> */}
+          <Navbar.Text>{staffUserId}님 환영합니다.</Navbar.Text>
           <Button
               variant="outline-primary"
               className="logoutBtn"
@@ -83,6 +70,9 @@ export default function AdminHeader() {
           >
             로그아웃
           </Button>
+
+
+
         </Container>
       </Navbar>
     </div>

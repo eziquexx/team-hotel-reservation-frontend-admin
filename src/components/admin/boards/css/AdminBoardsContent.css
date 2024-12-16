@@ -1,1 +1,27 @@
 /* AdminBoardsContent.css */
+#adminBoardsContent {
+  width: 1200px;
+}
+#adminBoardsContent .table-height-fixed {
+  height: 420px;
+  margin-bottom: 20px;
+}
+#adminBoardsContent .contentTitle {
+  margin-top: 10px;
+  margin-bottom: 16px;
+}
+#adminBoardsContent .contentTable {
+  font-size: 14px;
+}
+.adminBoardsContent .modal-item-text {
+  margin-left: 6px;
+}
+.adminBoardsContent .table-cell {
+  white-space: nowrap;       /* 텍스트 줄 바꿈을 하지 않도록 설정 */
+  overflow: hidden;          /* 넘치는 텍스트는 숨김 처리 */
+  text-overflow: ellipsis;   /* 넘치는 텍스트는 '...'으로 표시 */
+}
+#adminBoardsContent .detailFormWrap {
+  padding: 20px;
+  border: 1px solid #ddd;
+}

@@ -2,6 +2,7 @@ import React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import AdminHeader from "../components/common/AdminHeader";
 import AdminContents from "../components/common/AdminContents";
+import Cookies from 'js-cookie';
 
 const AdminPage = () => {
     const navigate = useNavigate();
@@ -30,6 +31,7 @@ const AdminPage = () => {
         <div style={AdminContainerStyle}>
             <AdminHeader onLogout={handleLogout} /> {/* 로그아웃 핸들러 전달 */}
             <AdminContents />
+
         </div>
     );
 };

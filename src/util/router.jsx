@@ -11,8 +11,13 @@ import AdminHomeContent from "../components/admin/adminHome/script/AdminHomeCont
 import AdminPaymentsList from "../components/admin/payments/script/AdminPaymentsList";
 import AdminPaymentsPaypalList from "../components/admin/payments/script/AdminPaymentsPaypalList";
 import PrivateRoute from "../components/common/PrivateRoute";
+import AdminNoticeDetailPage from "../components/admin/boards/script/AdminNoticeDetailPage";
+import AdminNoticeList from "../components/admin/boards/script/AdminNoticeList";
+import AdminRoomTypeContent from "../components/admin/room/script/AdminRoomTypeContent";
 import AdminLoginPage from "../pages/AdminLoginPage";
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from 'jwt-decode';
+
+import PrivateRoute from "../components/common/PrivateRoute";
 
 const ErrorPage = () => {
   return (
@@ -30,7 +35,11 @@ export const RouterInfo = [
   },
   {
     path: "/admin",
-    element: <AdminPage />,
+    element: (
+        <PrivateRoute>
+          <AdminPage />
+        </PrivateRoute>
+    ),
     errorElement: <ErrorPage />,
     loader: () => {
       const token = document.cookie
@@ -76,6 +85,10 @@ export const RouterInfo = [
         element: <AdminRoomContent />,
       },
       {
+        path: "roomtype",
+        element:<AdminRoomTypeContent/>,
+      },
+      {
         path: "reservation",
         element: <AdminReservationContent />,
       },
@@ -96,6 +109,16 @@ export const RouterInfo = [
       {
         path: "boards",
         element: <AdminBoardsContent />,
+        children: [
+          {
+            path: "",
+            element: <AdminNoticeList />
+          },
+          {
+            path: ":noticeId",
+            element: <AdminNoticeDetailPage />
+          }
+        ]
       },
       {
         path: "statistics",

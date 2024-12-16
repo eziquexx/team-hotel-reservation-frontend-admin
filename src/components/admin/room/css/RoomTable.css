@@ -1,0 +1,310 @@
+/* AdminRoomContent.css */
+/* 전체 컨테이너 스타일 */
+.room-table-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    margin: 20px;
+    padding: 20px;
+    max-width: 100%;
+    background-color: #ffffff; /* 흰 배경 */
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+    min-height: 100vh; 
+    /* 화면 높이를 꽉 채우도록 설정 */
+    /* overflow: hidden; 컨테이너 넘치지 않도록 설정 */
+}
+
+/* 페이지 제목 */
+.room-table-container h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #e6e6e6;
+    padding-bottom: 10px;
+}
+
+/* 조건 입력 필드 스타일 */
+.room-table-container > div {
+    margin-bottom: 20px;
+}
+
+.room-table-container label {
+    margin-right: 10px;
+}
+
+/* 테이블을 감싸는 div에 가로 스크롤 적용 */
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto; /* 가로 스크롤을 자동으로 추가 */
+    flex-grow: 1; /* 테이블이 나머지 공간을 차지하도록 설정 */
+}
+
+/* 테이블 스타일 */
+.room-table {
+    width: 100%;
+    border-collapse: collapse; /* 테두리 겹침 제거 */
+    font-size: 14px;
+    text-align: center; /* 텍스트 중앙 정렬 */
+    color: #333;
+    min-width: 1000px; /* 최소 너비 설정 (너무 좁아지지 않도록) */
+}
+
+/* 테이블 헤더 */
+.room-table th {
+    background-color: #f7f8fa; /* 헤더 배경색 */
+    color: #555;
+    font-weight: bold;
+    padding: 10px;
+    text-transform: uppercase;
+    border-bottom: 2px solid #ddd; /* 하단 테두리 */
+}
+
+/* 테이블 셀 */
+.room-table td {
+    padding: 12px;
+    border-bottom: 1px solid #f0f0f0; /* 셀 하단 구분선 */
+}
+
+/* 홀수/짝수 줄 배경 */
+.room-table tr:nth-child(odd) {
+    background-color: #fafafa; /* 홀수 행 배경 */
+}
+
+.room-table tr:nth-child(even) {
+    background-color: #ffffff; /* 짝수 행 배경 */
+}
+
+/* 상태 버튼 스타일 */
+.status-button {    
+    margin: auto;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+/* 상태별 버튼 색상 */
+.status-button.AVAILABLE {
+    background-color: #4CAF50; /* 초록색 */
+}
+
+.status-button.OCCUPIED {
+    background-color: #F44336; /* 빨간색 */
+}
+
+.status-button:hover {
+    opacity: 0.9;
+}
+
+/* 테이블 캡션 (하단 설명) */
+.table-caption {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #777;
+    text-align: left;
+}
+
+/* 조건 입력 필드 스타일 */
+.room-table-container > div {
+    display: flex;
+    flex-wrap: wrap; /* 화면 크기에 따라 줄 바꿈 */
+    gap: 20px; /* 각 요소 간의 간격을 20px로 설정 */
+    margin-bottom: 20px;
+    align-items: center; /* 아이템들을 수직 중앙 정렬 */
+}
+
+/* 레이블 스타일 */
+.room-table-container label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    margin: 10px; /* 오른쪽 간격 */
+}
+
+/* 예약 날짜 입력 필드 스타일 */
+.room-table-container input[type="date"] {
+    padding: 8px;
+    font-size: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 150px; /* 고정 너비 */
+    max-width: 100%;
+}
+
+/* 객실 상태 선택 필드 스타일 */
+.room-table-container select {
+    padding: 8px;
+    font-size: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 150px; /* 고정 너비 */
+    max-width: 100%;
+}
+
+/* 조회 버튼 스타일 */
+.room-table-container button {
+    padding: 0 20px; /* 좌우 여백만 */
+    font-size: 16px; /* 큰 글씨 */
+    font-weight: bold;
+    border-radius: 5px;
+    border: none;
+    background-color: #003366; /* 남색 배경 */
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    height: 40px; /* 다른 입력 필드들과 동일한 높이 */
+    width: auto; /* 가로 크기는 자동으로 맞춰짐 */
+}
+
+/* 조회 버튼 호버 스타일 */
+.room-table-container button:hover {
+    background-color: #a2a2a2; /* 버튼 위에 마우스를 올렸을 때 어두운 남색 */
+}
+
+/* 조회 버튼 클릭 시 색상 변경 */
+.room-table-container button:active {
+    background-color: #808080; /* 클릭 시 회색으로 변경 */
+    transform: scale(0.98); /* 클릭 시 살짝 작아지는 효과 */
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1200px) {
+    .room-table-container > div {
+        gap: 15px; /* 화면 크기 줄어들 때 간격을 좁힘 */
+    }
+
+    .room-table-container label {
+        font-size: 12px;
+    }
+
+    .room-table-container input[type="date"],
+    .room-table-container select,
+    .room-table-container button {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .room-table-container > div {
+        gap: 12px;
+    }
+
+    .room-table-container label {
+        font-size: 12px;
+    }
+
+    .room-table-container input[type="date"],
+    .room-table-container select,
+    .room-table-container button {
+        font-size: 12px;
+        padding: 8px;
+    }
+}
+
+@media (max-width: 576px) {
+    .room-table-container > div {
+        gap: 8px;
+    }
+
+    .room-table-container label {
+        font-size: 10px;
+    }
+
+    .room-table-container input[type="date"],
+    .room-table-container select,
+    .room-table-container button {
+        font-size: 10px;
+        padding: 6px;
+    }
+}
+
+
+/* 반응형 디자인 */
+@media (max-width: 1200px) {
+    .room-table-container {
+        padding: 15px; /* 화면 크기 줄어들 때 패딩 축소 */
+    }
+    .room-table {
+        font-size: 12px; /* 테이블 폰트 크기 줄이기 */
+    }
+}
+
+@media (max-width: 992px) {
+    .room-table-container {
+        margin: 15px; /* 화면 크기 줄어들 때 마진 축소 */
+    }
+
+    .room-table th,
+    .room-table td {
+        padding: 8px; /* 셀 내 여백 줄이기 */
+    }
+
+    .room-table td {
+        font-size: 12px; /* 작은 화면에서 테이블 내용 글씨 크기 줄이기 */
+    }
+
+    .room-table th {
+        font-size: 14px; /* 헤더 글씨 크기 줄이기 */
+    }
+
+    .room-table td .status-button {
+        font-size: 10px; /* 버튼 폰트 크기 줄이기 */
+    }
+}
+
+@media (max-width: 768px) {
+    .room-table-container {
+        padding: 10px; /* 작은 화면에서 패딩 더욱 줄이기 */
+    }
+
+    .room-table {
+        font-size: 10px; /* 더 작은 화면에서 폰트 크기 줄이기 */
+    }
+
+    .room-table th,
+    .room-table td {
+        padding: 6px; /* 셀 패딩 줄이기 */
+    }
+
+    .room-table td .status-button {
+        padding: 3px 5px; /* 버튼 크기 줄이기 */
+    }
+
+    .room-table th {
+        font-size: 12px; /* 헤더 폰트 크기 줄이기 */
+    }
+
+    .room-table-container h2 {
+        font-size: 18px; /* 제목 폰트 크기 줄이기 */
+    }
+}
+
+@media (max-width: 576px) {
+    .room-table-container {
+        padding: 5px; /* 가장 작은 화면에서 패딩을 더 줄이기 */
+    }
+
+    .room-table th,
+    .room-table td {
+        padding: 4px; /* 셀 내 여백 더 줄이기 */
+    }
+
+    .room-table td .status-button {
+        font-size: 8px; /* 버튼 폰트 크기 더 줄이기 */
+    }
+
+    .room-table th {
+        font-size: 10px; /* 헤더 폰트 크기 더 줄이기 */
+    }
+
+    .room-table-container h2 {
+        font-size: 16px; /* 제목 폰트 크기 더 줄이기 */
+    }
+}
