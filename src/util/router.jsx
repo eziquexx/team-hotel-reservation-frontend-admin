@@ -13,6 +13,7 @@ import AdminPaymentsPaypalList from "../components/admin/payments/script/AdminPa
 import PrivateRoute from "../components/common/PrivateRoute";
 import AdminNoticeDetailPage from "../components/admin/boards/script/AdminNoticeDetailPage";
 import AdminNoticeList from "../components/admin/boards/script/AdminNoticeList";
+import AdminNoticeCreatePage from "../components/admin/boards/script/AdminNoticeCreatePage";
 import AdminRoomTypeContent from "../components/admin/room/script/AdminRoomTypeContent";
 // import AdminPaymentsList from "../components/admin/payments/script/AdminPaymentsList";
 // import AdminPaymentsPaypalList from "../components/admin/payments/script/AdminPaymentsPaypalList";
@@ -27,6 +28,7 @@ const ErrorPage = () => {
       </div>
   );
 };
+
 
 export const RouterInfo = [
   {
@@ -87,6 +89,10 @@ export const RouterInfo = [
           {
             path: ":noticeId",
             element: <AdminNoticeDetailPage />
+          },
+          {
+            path: "create",
+            element: <AdminNoticeCreatePage />
           }
         ]
       },
