@@ -2,6 +2,10 @@ import { useEffect, useState } from "react";
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import AdminNoticeMoveBackModal from "./AdminNoticeMoveBackModal";
+import AdminNoticeEditModal from "./AdminNoticeEditModal";
+import AdminNoticeEditSuccessModal from "./AdminNoticeEditSuccessModal";
+import AdminNoticeDeleteModal from "./AdminNoticeDeleteModal";
+import AdminNoticeDeleteSuccessModal from "./AdminNoticeDeleteSuccessModal";
 
 export default function AdminNoticeDetailPage() {
     const navigate = useNavigate();
@@ -14,9 +18,30 @@ export default function AdminNoticeDetailPage() {
     const [ error, setError ] = useState(null);
     const [ showModal, setShowModal ] = useState(false);
     const [ showSaveModal, setShowSaveModal ] = useState(false);
-    // const handleClose = () => setShow(false);
-    // const handleShow = () => setShow(true);
-    
+    const [ isEditButtonDisabled, setIsEditButtonDisabled] = useState("disabled");
+    const [ showSaveCompletedModal, setShowSaveCompletedModal ] = useState(false);
+    const [ saveSuccess, setSaveSuccess ] = useState(false);
+    const [ showDeleteModal, setShowDeleteModal ] = useState(false);
+    const [ deleteSuccess, setDeleteSuccess ] = useState(false);
+    const [ showDeleteCompletedModal, setShowDeleteCompletedModal ] = useState(false);
+
+    // 해당 게시글 상세내용 api 호출 함수
+    const fetchNotice = async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/api/admin/notices/${noticeId}`);
+            const data = await response.json();
+            setData(data); // fetch문으로 가져온 데이터 저장
+            setOriginalData(data); // 원본으로도 저장하기
+            setSelectedImportant(data.isImportant ? '1' : '0');
+            setSelectedCategory(data.category);
+            setLoading(false);
+        } catch (error) {
+            setError(error.message);
+            setLoading(false);
+        }
+    };
+
+    // 첫 렌더링시 fetchNotice 함수 호출
     useEffect(() => {
         const fetchNotice = async () => {
             try {
@@ -37,10 +62,60 @@ export default function AdminNoticeDetailPage() {
             }
             
         };
-
         fetchNotice();
-    }, [noticeId]);
+    },[noticeId])
 
+    // data와 originalData가 둘 다 준비되었을 때만 실행되도록 조건 처리
+    useEffect(() => {
+        if (data && originalData) {
+            if (
+                originalData.category !== data.category ||
+                originalData.isImportant !== data.isImportant ||
+                originalData.title !== data.title ||
+                originalData.content !== data.content
+            ) {
+                setIsEditButtonDisabled("");
+            } else {
+                setIsEditButtonDisabled("disabled");
+            }
+        }
+    }, [data, originalData]); // data나 originalData가 변경될 때마다 실행
+
+    // 수정 내용 DB에 저장 handler
+    const handleSaveChanges = async () => {
+        // 수정된 내용 api 호출해서 db에 저장하기
+        try {
+            const response = await fetch(`http://localhost:8080/api/admin/notices/${noticeId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    id: data.noticeId,
+                    title: data.title,
+                    content: data.content,
+                    category: data.category,
+                    isImportant: data.isImportant,
+                }),
+            });
+            console.log(response.status);
+            if (response.status === 200) {
+                const result = await response.text();
+                console.log(result);
+                setSaveSuccess(true);
+                fetchNotice();
+            } else {
+                console.error("수정 실패", response.status);
+                setSaveSuccess(false);
+            }
+        } catch (error) {
+            console.error("에러 발생", error);
+            setSaveSuccess(false);
+        } finally {
+            setShowSaveCompletedModal(true);
+        }
+    }
+    
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
     if (!data) return <div>No data</div>
@@ -70,14 +145,16 @@ export default function AdminNoticeDetailPage() {
         setData({ ...data, category: e.target.value });
     }
 
-    console.log(data);
+    //console.log(data); // 테스트용 콘솔
 
     // 모달창 닫기
     const handleCloseModal = () => {
         setShowModal(false);
         setShowSaveModal(false);
+        setShowSaveCompletedModal(false);
+        setShowDeleteModal(false);
+        setShowDeleteCompletedModal(false);
     };
-
 
     // 뒤로가기 modal
     const handleMoveBack = () => {
@@ -89,21 +166,50 @@ export default function AdminNoticeDetailPage() {
         }
     };
 
+    // 뒤로가기 확인 모달에서 뒤로가기 클릭시 이동    
     const handleConfirmMoveBack = () => {
         setShowModal(false);
         navigate(-1);
     };
 
-    // 수정 모달
+    // 수정 모달 오픈.
     const handleEditModal = () => {
         setShowSaveModal(true);
     }
 
-    // 수정 내용 DB에 저장 handler
-    const handleSaveChanges = async () => {
-        // 수정된 내용 api 호출해서 db에 저장하기
+    // 삭제 모달 오픈
+    const handleDeleteModal = () => {
+        setShowDeleteModal(true);
     }
 
+    // 삭제 api
+    const handleDeleteChanges = async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/api/admin/notices/${noticeId}`, {
+                method: "DELETE",
+            })
+            console.log(response.status);
+            if (response.status === 200) {
+                const result = await response.text();
+                console.log(result);
+                setDeleteSuccess(true);
+            } else {
+                console.error("삭제 실패", response.status);
+                setDeleteSuccess(false);
+            }
+        } catch(error) {
+            console.error("에러 발생", error);
+            setDeleteSuccess(false);
+        } finally {
+            setShowDeleteCompletedModal(true);
+        }
+    }
+
+    // 삭제 성공 모달에서 닫기 버튼 클릭시 뒤로 이동
+    const handleDeleteBackMove = () => {
+        navigate(-1);
+    }
+    
     return (
         <> 
             <div>
@@ -111,11 +217,11 @@ export default function AdminNoticeDetailPage() {
                 <Form className="detailFormWrap">
                     <Form.Group as={Row} className="mb-3" controlId="">
                         <Form.Label column sm={1}>게시판 ID</Form.Label>
-                        <Col sm={2}>
+                        <Col sm={3}>
                             <Form.Control plaintext readOnly defaultValue={data.noticeId} />
                         </Col>
                         <Form.Label column sm={1}>중요도</Form.Label>
-                        <Col sm={2}>
+                        <Col sm={3}>
                             <Form.Select 
                                 aria-label="Default select example" 
                                 value={selectedImportant}
@@ -130,7 +236,7 @@ export default function AdminNoticeDetailPage() {
                     
                     <Form.Group as={Row} className="mb-3" controlId="">
                         <Form.Label column sm={1}>카테고리</Form.Label>
-                        <Col sm={2}>
+                        <Col sm={3}>
                             <Form.Select 
                                 value={selectedCategory}
                                 onChange={handleCategoryChange}
@@ -142,27 +248,28 @@ export default function AdminNoticeDetailPage() {
                             </Form.Select>
                         </Col>
                         <Form.Label column sm={1}>조회수</Form.Label>
-                        <Col sm={2}>
+                        <Col sm={3}>
                             <Form.Control plaintext readOnly defaultValue={data.views} />
                         </Col>
                     </Form.Group>
 
                     <Form.Group as={Row} className="mb-3" controlId="">
                         <Form.Label column sm={1}>작성일</Form.Label>
-                        <Col sm={2}>
+                        <Col sm={3}>
                             <Form.Control plaintext readOnly defaultValue={formatDate(data.createdAt)} />
                         </Col>
                         <Form.Label column sm={1}>수정일</Form.Label>
-                        <Col sm={2}>
+                        <Col sm={3}>
                             <Form.Control plaintext readOnly defaultValue={formatDate(data.updatedAt)} />
                         </Col>
                     </Form.Group>
     
                     <Form.Group as={Row} className="mb-3" controlId="">
                         <Form.Label column sm={1}>제목</Form.Label>
-                        <Col sm={6}>
+                        <Col sm={11}>
                             <Form.Control 
                                 type="text" 
+                                name="title"
                                 value={data.title} 
                                 onChange={handleInputChange}
                             />
@@ -171,18 +278,19 @@ export default function AdminNoticeDetailPage() {
 
                     <Form.Group as={Row} className="mb-3" controlId="">
                         <Form.Label column sm={1}>내용</Form.Label>
-                        <Col sm={6}>
+                        <Col sm={11}>
                             <Form.Control 
                                 as="textarea" 
+                                name="content"
                                 value={data.content} 
                                 onChange={handleInputChange}
-                                style={{resize: "none", }}
+                                style={{resize: "none"}}
                                 rows= "14"
                             />
                         </Col>
                     </Form.Group>
 
-                    <div>
+                    <div className="btnGroup">
                         <Button 
                             variant="secondary" 
                             onClick={handleMoveBack}
@@ -192,11 +300,16 @@ export default function AdminNoticeDetailPage() {
                         <Button 
                             variant="primary" 
                             onClick={handleEditModal} 
-                            // disabled={isEditButtonDisabled}
+                            disabled={isEditButtonDisabled}
                         >
                             수정
                         </Button>
-                        <Button variant="danger">삭제</Button>
+                        <Button 
+                            variant="danger"
+                            onClick={handleDeleteModal}
+                        >
+                            삭제
+                        </Button>
                     </div>
                 </Form>
             </div>
@@ -209,19 +322,34 @@ export default function AdminNoticeDetailPage() {
             />
 
             {/* 수정 확인 모달 */}
-            <Modal show={showSaveModal} onHide={handleCloseModal} centered>
-                <Modal.Body>
-                    <p>수정된 내용을 저장하시겠습니까?</p>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleCloseModal}>
-                        아니오
-                    </Button>
-                    <Button variant="primary" onClick={handleSaveChanges}>
-                        예
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+            <AdminNoticeEditModal
+                showSaveModal={showSaveModal}
+                handleCloseModal={handleCloseModal}
+                handleSaveChanges={handleSaveChanges}
+            />
+
+            {/* 수정 완료 모달 */}
+            <AdminNoticeEditSuccessModal 
+                showSaveCompletedModal={showSaveCompletedModal}
+                handleCloseModal={handleCloseModal}
+                saveSuccess={saveSuccess}
+            />
+
+            {/* 삭제 확인 모달 */}
+            <AdminNoticeDeleteModal 
+                showDeleteModal={showDeleteModal}
+                handleCloseModal={handleCloseModal}
+                handleDeleteChanges={handleDeleteChanges}
+            />
+
+            {/* 삭제 완료 모달 */}
+            <AdminNoticeDeleteSuccessModal 
+                showDeleteCompletedModal={showDeleteCompletedModal}
+                handleCloseModal={handleCloseModal}
+                deleteSuccess={deleteSuccess}
+                handleDeleteBackMove={handleDeleteBackMove}
+            />
+            
         </>
     );
 }
