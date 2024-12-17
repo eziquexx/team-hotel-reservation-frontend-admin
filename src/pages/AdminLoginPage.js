@@ -54,7 +54,7 @@ const AdminLoginPage = () => {
     return (
         <div className="login-container">
             <div className="login-card">
-                <h1 className="login-title">HJ HOTEL <br />관리자 로그인</h1>
+                <h1 className="login-title">StarellaHotel<br />관리자 로그인</h1>
                 {error && <p className="login-error">{error}</p>}
                 <form onSubmit={handleLogin} className="login-form">
                     <div className="input-group">
