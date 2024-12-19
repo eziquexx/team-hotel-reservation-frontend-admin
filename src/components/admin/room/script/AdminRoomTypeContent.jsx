@@ -3,6 +3,7 @@ import RoomTable from './comn/RoomTable';
 import Modal from './comn/Modal';
 import ToggleSwitch from './comn/ToggleSwitch';
 import "../css/AddAmenityForm.css";
+import config from '../../../../config';
 
 export default function AdminRoomTypeContent() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -32,7 +33,7 @@ export default function AdminRoomTypeContent() {
     const fetchRoomTypes = async () => {
         try {
             setLoading(true);
-            const response = await fetch(`http://localhost:8080/api/admin/rooms/types`,{
+            const response = await fetch(`${config.API_BASE_URL}/api/admin/rooms/types`,{
                 method: 'GET', // GET 요청
                 credentials: 'include', // 쿠키를 함께 전송
               });
@@ -48,7 +49,7 @@ export default function AdminRoomTypeContent() {
 
     const fetchAmenities = async (TypeName) => {
         try {
-            const response = await fetch(`http://localhost:8080/api/admin/rooms/types/${TypeName}`,{
+            const response = await fetch(`${config.API_BASE_URL}/api/admin/rooms/types/${TypeName}`,{
                 method: 'GET', // GET 요청
                 credentials: 'include', // 쿠키를 함께 전송
               });
@@ -107,7 +108,7 @@ export default function AdminRoomTypeContent() {
             const newState = !currentAmenity.amenityActive;
 
             const response = await fetch(
-                `http://localhost:8080/api/admin/rooms/toggle?TypeName=${selectedRoom.name}&amenity=${amenityName}`,
+                `${config.API_BASE_URL}/api/admin/rooms/toggle?TypeName=${selectedRoom.name}&amenity=${amenityName}`,
                 {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
@@ -151,7 +152,7 @@ export default function AdminRoomTypeContent() {
     const handleAddAmenitySubmit = async (e, amenityData) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:8080/api/admin/rooms/addamenity', {
+            const response = await fetch(`${config.API_BASE_URL}/api/admin/rooms/addamenity`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
