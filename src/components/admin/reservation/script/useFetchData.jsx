@@ -9,7 +9,7 @@ function useFetchData(url){
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const [method, setMethod] = useState(null);
+    const [method, setMethod] = useState(null); //요청 실행 트리거 - 24.12.23 한택 : 트리거는 따로 분리할 수 있도록 추가 작업 필요
     const [pathParams, setPathParams] = useState({});
     const [body, setBody] = useState({});
     const [queryParams, setQueryParams] = useState({});
@@ -56,7 +56,7 @@ function useFetchData(url){
     
             // 2. queryParams 처리
             if (Object.keys(queryParams).length > 0) {
-                const queryString = new URLSearchParams(queryParams).toString();
+                const queryString = setQueryString(queryParams);
                 fullUrl += `?${queryString}`;
             }
     
@@ -75,6 +75,7 @@ function useFetchData(url){
             const result = await response.json();
             setData(result);
 
+            // fetch 이후에 실행되는 이벤트 함수
             if (eventHandlersRef.current.afterFetch) {
                 eventHandlersRef.current.afterFetch(result); 
             }
@@ -93,10 +94,7 @@ function useFetchData(url){
             fetchData();
     },[fetchData])
 
-    function fetchEventHandler(){
-
-    }
-
+    //fetch loading 컴포넌트
     function FetchLoadingComponent(){
 
         return (
