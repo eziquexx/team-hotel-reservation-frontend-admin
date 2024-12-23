@@ -54,7 +54,7 @@ export default function AdminHeader() {
               url={"/admin"}
               className={"adminHomeBtn"}
             >
-              HJ HOTEL ADMIN
+              StarellaHotel Admin
             </ButtonEx>
           </Navbar.Brand>
           <Nav className="me-auto">

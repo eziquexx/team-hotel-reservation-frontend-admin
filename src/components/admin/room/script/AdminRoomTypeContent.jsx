@@ -152,20 +152,22 @@ export default function AdminRoomTypeContent() {
         e.preventDefault();
         try {
             const response = await fetch('http://localhost:8080/api/admin/rooms/addamenity', {
-                method: 'POST',
+                method: 'POST', // HTTP 메서드를 POST로 수정
                 headers: {
-                    'Content-Type': 'application/json',
-                    credentials: 'include', // 쿠키를 함께 전송
+                    'Content-Type': 'application/json', // 요청 본문 형식 지정
                 },
-                body: JSON.stringify({ ...amenityData, roomTypeId: selectedRoom.roomTypeId }),
+                credentials: 'include', // 쿠키를 함께 전송
+                body: JSON.stringify({ ...amenityData, roomTypeId: selectedRoom.roomTypeId }), // 데이터 전송
             });
 
             if (!response.ok) {
-                throw new Error('Failed to add amenity');
+                const errorText = await response.text(); // 서버에서 반환한 에러 메시지 확인
+                throw new Error(`Failed to add amenity: ${errorText}`);
             }
+
             console.log('어메니티 추가 완료', response);
-            fetchAmenities(selectedRoom.name);
-            closeAddAmenityPopup();
+            fetchAmenities(selectedRoom.name); // 어메니티 목록 새로고침
+            closeAddAmenityPopup(); // 팝업 닫기
         } catch (error) {
             console.error('어메니티 추가 실패:', error);
         }
