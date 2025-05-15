@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Button, Modal, Spinner } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
-import config from '../../../../config';
 
 // 24.12.06 지은 : 결제내역 테이블 fin. 상세내역 모달창 작업 fin.
 export default function AdminPaymentTable({ data, loading }) {
+  const env_API_BASE_URL = process.env.REACT_APP_API_URL;
   const [items, setItems] = useState(data);
   const [showModal, setShowModal] = useState(false);
   const [smDeleteAlert, setSmDeleteAlert] = useState(false);
@@ -45,7 +45,7 @@ export default function AdminPaymentTable({ data, loading }) {
     setError(null);
 
     try {
-      const response = await fetch(`${config.API_BASE_URL}/api/admin/payments/${itemId}/details`, {
+      const response = await fetch(`${env_API_BASE_URL}/api/admin/payments/${itemId}/details`, {
         method: 'GET', // GET 요청
         credentials: 'include', // 쿠키를 함께 전송
       });
@@ -91,7 +91,7 @@ export default function AdminPaymentTable({ data, loading }) {
   const updateStatus = async(paymentId, newStatus) => {
     // 상태값 update api 호출
     try {
-      const response = await fetch(`${config.API_BASE_URL}/api/admin/payments/${paymentId}/status?newStatus=${newStatus}`, {
+      const response = await fetch(`${env_API_BASE_URL}/api/admin/payments/${paymentId}/status?newStatus=${newStatus}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -133,7 +133,7 @@ export default function AdminPaymentTable({ data, loading }) {
   const rowRealDelete = async () => {
     // 삭제 api 호출
     try {
-      const response = await fetch(`${config.API_BASE_URL}/api/admin/payments/${selectedItem.paymentId}`, {
+      const response = await fetch(`${env_API_BASE_URL}/api/admin/payments/${selectedItem.paymentId}`, {
         method: "DELETE",
         headers: {
           "Content-Type" : "application/json",

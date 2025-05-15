@@ -6,15 +6,16 @@ import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
 import ButtonEx from "./ButtonEx";
 import "./css/AdminHeader.css";
-import config from '../../config';
 
 //24.11.25 지은 [완료] : AdminHeader 링크 테스트
 export default function AdminHeader() {
+  const env_API_BASE_URL = process.env.REACT_APP_API_URL;
+  const env_SERVER_USER_URL = process.env.REACT_APP_SERVER_USER_URL;
   const [staffUserId, setStaffUserId] = useState(""); // 관리자 아이디 상태
 
   const handleLogout = async () => {
     try {
-      await fetch(`${config.API_BASE_URL}/api/admin/logout`, {
+      await fetch(`${env_API_BASE_URL}/api/admin/logout`, {
         method: "POST",
         credentials: "include",
       });
@@ -28,7 +29,7 @@ export default function AdminHeader() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await fetch(`${config.API_BASE_URL}/api/admin/protected`, {
+        const response = await fetch(`${env_API_BASE_URL}/api/admin/protected`, {
           credentials: "include", // 세션 정보를 포함
         });
         if (response.ok) {
@@ -59,7 +60,7 @@ export default function AdminHeader() {
             </ButtonEx>
           </Navbar.Brand>
           <Nav className="me-auto">
-            <Link to="/admin">
+            <Link to={env_SERVER_USER_URL}>
               <span className="material-symbols-outlined">home</span>
             </Link>
           </Nav>

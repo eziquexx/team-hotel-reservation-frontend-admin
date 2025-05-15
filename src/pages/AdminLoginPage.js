@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../components/common/css/AdminLoginPage.css";
-import config from '../config';
 
 const AdminLoginPage = () => {
+    const env_API_BASE_URL = process.env.REACT_APP_API_URL;
     const [staffUserId, setStaffUserId] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -14,7 +14,7 @@ const AdminLoginPage = () => {
         setError("");
 
         try {
-            const response = await fetch(`${config.API_BASE_URL}/api/admin/login`, {
+            const response = await fetch(`${env_API_BASE_URL}/api/admin/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include", // 쿠키를 요청에 포함

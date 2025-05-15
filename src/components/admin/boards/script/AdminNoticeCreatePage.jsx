@@ -4,9 +4,9 @@ import AdminNoticeCreateFiledCheckModal from "./AdminNoticeCreateFiledCheckModal
 import { useNavigate } from "react-router-dom";
 import AdminNoticeCreateSuccessModal from "./AdminNoticeCreateSuccessModal";
 import AdminNoticeCreateFailedModal from "./AdminNoticeCreateFailedModal";
-import config from "../../../../config";
 
 export default function AdminNoticeCreatePage() {
+    const env_API_BASE_URL = process.env.REACT_APP_API_URL;
     const [ selectedImportant, setSelectedImportant ] = useState("");
     const [ selectedCategory, setSelectedCategory ] = useState("");
     const [ title, setTitle ] = useState("");
@@ -71,7 +71,7 @@ export default function AdminNoticeCreatePage() {
         };
 
         try {
-            const response = await fetch(`${config.API_BASE_URL}/api/admin/notices`, {
+            const response = await fetch(`${env_API_BASE_URL}/api/admin/notices`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
