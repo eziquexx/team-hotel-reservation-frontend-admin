@@ -9,10 +9,6 @@
 
 <br>
 
-:star: [JELEE Notion (Click!)](https://dev-jelee.notion.site/dev-jelee-5686cfa35c1b4c859a27de25d5fad5dd?pvs=4) 로 이동하면 해당 프로젝트 또는 다른 프로젝트의 내용과 저의 이력서를 볼 수 있습니다. :star:
-
-<br/>
-
 ## :speech_balloon: 프로젝트 소개
 **Hotel PMS 관리자 페이지**입니다.<br>
 관리자는 회원 관리, 객실/비품 관리, 예약 관리, 결제 내역 확인, 게시판 관리 등을 수행할 수 있도록 구성되어 있습니다.<br><br>
